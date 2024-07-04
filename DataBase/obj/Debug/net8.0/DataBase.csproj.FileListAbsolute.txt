@@ -1,0 +1,17 @@
+P:\DotaWebStats\DataBase\bin\Debug\net8.0\DataBase.deps.json
+P:\DotaWebStats\DataBase\bin\Debug\net8.0\DataBase.runtimeconfig.json
+P:\DotaWebStats\DataBase\bin\Debug\net8.0\DataBase.dll
+P:\DotaWebStats\DataBase\bin\Debug\net8.0\DataBase.pdb
+P:\DotaWebStats\DataBase\bin\Debug\net8.0\ModelClasses.dll
+P:\DotaWebStats\DataBase\bin\Debug\net8.0\ModelClasses.pdb
+P:\DotaWebStats\DataBase\obj\Debug\net8.0\DataBase.csproj.AssemblyReference.cache
+P:\DotaWebStats\DataBase\obj\Debug\net8.0\DataBase.GeneratedMSBuildEditorConfig.editorconfig
+P:\DotaWebStats\DataBase\obj\Debug\net8.0\DataBase.AssemblyInfoInputs.cache
+P:\DotaWebStats\DataBase\obj\Debug\net8.0\DataBase.AssemblyInfo.cs
+P:\DotaWebStats\DataBase\obj\Debug\net8.0\DataBase.csproj.CoreCompileInputs.cache
+P:\DotaWebStats\DataBase\obj\Debug\net8.0\DataBase.csproj.Up2Date
+P:\DotaWebStats\DataBase\obj\Debug\net8.0\DataBase.dll
+P:\DotaWebStats\DataBase\obj\Debug\net8.0\refint\DataBase.dll
+P:\DotaWebStats\DataBase\obj\Debug\net8.0\DataBase.pdb
+P:\DotaWebStats\DataBase\obj\Debug\net8.0\DataBase.genruntimeconfig.cache
+P:\DotaWebStats\DataBase\obj\Debug\net8.0\ref\DataBase.dll

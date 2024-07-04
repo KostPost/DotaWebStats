@@ -1,0 +1,12 @@
+P:\DotaWebStats\Controllers\bin\Debug\net8.0\Controllers.deps.json
+P:\DotaWebStats\Controllers\bin\Debug\net8.0\Controllers.dll
+P:\DotaWebStats\Controllers\bin\Debug\net8.0\Controllers.pdb
+P:\DotaWebStats\Controllers\obj\Debug\net8.0\Controllers.csproj.AssemblyReference.cache
+P:\DotaWebStats\Controllers\obj\Debug\net8.0\Controllers.GeneratedMSBuildEditorConfig.editorconfig
+P:\DotaWebStats\Controllers\obj\Debug\net8.0\Controllers.AssemblyInfoInputs.cache
+P:\DotaWebStats\Controllers\obj\Debug\net8.0\Controllers.AssemblyInfo.cs
+P:\DotaWebStats\Controllers\obj\Debug\net8.0\Controllers.csproj.CoreCompileInputs.cache
+P:\DotaWebStats\Controllers\obj\Debug\net8.0\Controllers.dll
+P:\DotaWebStats\Controllers\obj\Debug\net8.0\refint\Controllers.dll
+P:\DotaWebStats\Controllers\obj\Debug\net8.0\Controllers.pdb
+P:\DotaWebStats\Controllers\obj\Debug\net8.0\ref\Controllers.dll

@@ -1,0 +1,56 @@
+﻿@page "/add-account"
+@using DataBase
+@using ModelClasses
+@inject DotaWebStatsContext DbContext
+@inject NavigationManager NavigationManager
+
+<h3>Add New Account</h3>
+
+<EditForm Model="@newAccount" OnValidSubmit="HandleValidSubmit" FormName="myForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="userName">User Name:</label>
+        <InputText id="userName" @bind-Value="newAccount.UserName" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label for="steamId">Steam ID:</label>
+        <InputText id="steamId" @bind-Value="newAccount.SteamId" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label for="currentMMR">Current MMR:</label>
+        <InputNumber id="currentMMR" @bind-Value="newAccount.CurrentMMR" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label for="goalMMR">Goal MMR:</label>
+        <InputNumber id="goalMMR" @bind-Value="newAccount.GoalMMR" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Account</button>
+</EditForm>
+
+@code {
+    private UserAccount newAccount;
+
+    protected override void OnInitialized()
+    {
+        newAccount = new UserAccount();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        // Debugging statement
+        Console.WriteLine($"Submitting: {newAccount.UserName}, {newAccount.SteamId}, {newAccount.CurrentMMR}, {newAccount.GoalMMR}");
+
+        // Save the new account to the database
+        DbContext.UserAccounts.Add(newAccount);
+        await DbContext.SaveChangesAsync();
+
+        // Navigate back to the homepage after successful save
+        NavigationManager.NavigateTo("/");
+    }
+}
