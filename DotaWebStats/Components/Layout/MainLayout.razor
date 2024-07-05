@@ -4,6 +4,8 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 @inject IHttpClientFactory HttpClientFactory
+@inject IConfiguration Configuration
+
 
 <div class="page">
     <div class="sidebar">
@@ -41,10 +43,12 @@
     private string Username { get; set; }
     private string AvatarUrl { get; set; }
     private string SteamId { get; set; }
-    private readonly string SteamApiKey = "YOUR_STEAM_API_KEY_HERE"; // Replace with your actual Steam API key
+    private string SteamApiKey;
 
     protected override async Task OnInitializedAsync()
     {
+        SteamApiKey = Configuration["Steam:ApiKey"];
+
         var uri = new Uri(NavigationManager.Uri);
         var queryParams = System.Web.HttpUtility.ParseQueryString(uri.Query);
         var steamIdParam = queryParams["openid.claimed_id"];
