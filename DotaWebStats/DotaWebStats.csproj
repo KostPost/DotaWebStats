@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Update="Components\Pages\Home.css">
-        <DependentUpon>Home.razor</DependentUpon>
+      <None Update="Components\Pages\Index.css">
+        <DependentUpon>Index.razor</DependentUpon>
       </None>
       <None Update="Components\Pages\AddAccount.css">
         <DependentUpon>AddAccount.razor</DependentUpon>

@@ -10,3 +10,4 @@ P:\DotaWebStats\Controllers\obj\Debug\net8.0\Controllers.dll
 P:\DotaWebStats\Controllers\obj\Debug\net8.0\refint\Controllers.dll
 P:\DotaWebStats\Controllers\obj\Debug\net8.0\Controllers.pdb
 P:\DotaWebStats\Controllers\obj\Debug\net8.0\ref\Controllers.dll
+P:\DotaWebStats\Controllers\obj\Debug\net8.0\Controllers.sourcelink.json

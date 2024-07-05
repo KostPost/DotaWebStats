@@ -1,4 +1,9 @@
-﻿@inherits LayoutComponentBase
+﻿@using System.Text.Json
+@using ModelClasses
+@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@inject IHttpClientFactory HttpClientFactory
 
 <div class="page">
     <div class="sidebar">
@@ -7,7 +12,17 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            @if (!string.IsNullOrEmpty(Username))
+            {
+                <div class="user-info">
+                    <img src="@AvatarUrl" alt="User Avatar" class="user-avatar" />
+                    <span class="username">@Username</span>
+                </div>
+            }
+            else
+            {
+                <button @onclick="RedirectToAuth" class="btn btn-primary">Sign in with Steam</button>
+            }
         </div>
 
         <article class="content px-4">
@@ -21,3 +36,64 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@code {
+    private string Username { get; set; }
+    private string AvatarUrl { get; set; }
+    private string SteamId { get; set; }
+    private readonly string SteamApiKey = "YOUR_STEAM_API_KEY_HERE"; // Replace with your actual Steam API key
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = new Uri(NavigationManager.Uri);
+        var queryParams = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        var steamIdParam = queryParams["openid.claimed_id"];
+
+        if (!string.IsNullOrEmpty(steamIdParam))
+        {
+            SteamId = steamIdParam.Split('/').Last();
+            await GetUserInfo();
+        }
+    }
+
+    private async Task GetUserInfo()
+    {
+        if (string.IsNullOrEmpty(SteamId))
+            return;
+
+        using var client = new HttpClient();
+        var response = await client.GetAsync($"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={SteamApiKey}&steamids={SteamId}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"API Response: {content}"); // This will print the JSON to the console
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            var playerSummary = JsonSerializer.Deserialize<SteamUserData.SteamPlayerSummary>(content, options);
+
+            if (playerSummary?.Response?.Players?.FirstOrDefault() is var player && player != null)
+            {
+                Username = player.PersonaName;
+                AvatarUrl = player.AvatarFull;
+            }
+            else
+            {
+                Console.WriteLine("Failed to deserialize player data");
+            }
+        }
+        else
+        {
+            Console.WriteLine($"API request failed with status code: {response.StatusCode}");
+        }
+    }
+
+    private void RedirectToAuth()
+    {
+        NavigationManager.NavigateTo("/authentication");
+    }
+}

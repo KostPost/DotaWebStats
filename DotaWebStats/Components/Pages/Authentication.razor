@@ -1,0 +1,53 @@
+﻿@page "/authentication"
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+@rendermode InteractiveServer
+
+<h3>Steam Authentication</h3>
+
+@if (string.IsNullOrEmpty(SteamId))
+{
+    <button @onclick="InitiateSteamAuth">Sign in with Steam</button>
+}
+else
+{
+    <p>Welcome! Your Steam ID is: @SteamId</p>
+}
+
+@code {
+    private string SteamId { get; set; }
+    private const string ApiKey = "27947505395A6AA7FDAB420DCF4A4C52"; // Replace with your actual API key
+    private const string RedirectUri = "https://localhost:1234/"; // Keep HTTPS
+
+    private void InitiateSteamAuth()
+    {
+        var steamOpenIdUrl = "https://steamcommunity.com/openid/login";
+        var parameters = new Dictionary<string, string>
+        {
+            {"openid.ns", "http://specs.openid.net/auth/2.0"}, // Keep this as http
+            {"openid.mode", "checkid_setup"},
+            {"openid.return_to", RedirectUri},
+            {"openid.realm", "https://localhost:1234"}, // Updated to match your domain
+            {"openid.identity", "http://specs.openid.net/auth/2.0/identifier_select"},
+            {"openid.claimed_id", "http://specs.openid.net/auth/2.0/identifier_select"}
+        };
+
+        var url = $"{steamOpenIdUrl}?{string.Join("&", parameters.Select(kvp => $"{kvp.Key}={Uri.EscapeDataString(kvp.Value)}"))}";
+        NavigationManager.NavigateTo(url, forceLoad: true);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = new Uri(NavigationManager.Uri);
+        var queryParams = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        var steamIdParam = queryParams["openid.claimed_id"];
+
+        if (!string.IsNullOrEmpty(steamIdParam))
+        {
+            SteamId = steamIdParam.Split('/').Last();
+            // Here you would typically validate the response with Steam
+            // and then use the API to get more user information
+        }
+    }
+}

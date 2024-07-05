@@ -1,0 +1,43 @@
+﻿@page "/"
+@using ModelClasses
+@using DataBase
+@using Microsoft.EntityFrameworkCore
+@inject UserAccountController AccountController
+@inject NavigationManager NavigationManager
+
+@rendermode InteractiveServer
+
+<PageTitle>Dota 2 Statistics</PageTitle>
+
+<h1>Dota 2 Account Statistics</h1>
+
+@if (!string.IsNullOrEmpty(SteamId))
+{
+    <p>Welcome! Your Steam ID is: @SteamId</p>
+}
+else
+{
+    <p>Please sign in with Steam to view your Dota 2 statistics.</p>
+    <button @onclick="RedirectToAuth">Sign in with Steam</button>
+}
+
+@code {
+    private string SteamId { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var uri = new Uri(NavigationManager.Uri);
+        var queryParams = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        var steamIdParam = queryParams["openid.claimed_id"];
+
+        if (!string.IsNullOrEmpty(steamIdParam))
+        {
+            SteamId = steamIdParam.Split('/').Last();
+        }
+    }
+
+    private void RedirectToAuth()
+    {
+        NavigationManager.NavigateTo("/authentication");
+    }
+}
