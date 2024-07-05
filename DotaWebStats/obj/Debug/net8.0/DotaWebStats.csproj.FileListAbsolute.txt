@@ -43,3 +43,4 @@ P:\DotaWebStats\DotaWebStats\bin\Debug\net8.0\DataBase.pdb
 P:\DotaWebStats\DotaWebStats\bin\Debug\net8.0\ModelClasses.pdb
 P:\DotaWebStats\DotaWebStats\obj\Debug\net8.0\DotaWebStats.csproj.AssemblyReference.cache
 P:\DotaWebStats\DotaWebStats\obj\Debug\net8.0\DotaWebS.0504E441.Up2Date
+P:\DotaWebStats\DotaWebStats\obj\Debug\net8.0\DotaWebStats.sourcelink.json

@@ -9,3 +9,4 @@ P:\DotaWebStats\ModelClasses\obj\Debug\net8.0\ModelClasses.dll
 P:\DotaWebStats\ModelClasses\obj\Debug\net8.0\refint\ModelClasses.dll
 P:\DotaWebStats\ModelClasses\obj\Debug\net8.0\ModelClasses.pdb
 P:\DotaWebStats\ModelClasses\obj\Debug\net8.0\ref\ModelClasses.dll
+P:\DotaWebStats\ModelClasses\obj\Debug\net8.0\ModelClasses.sourcelink.json

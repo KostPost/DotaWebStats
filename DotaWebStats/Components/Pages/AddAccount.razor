@@ -4,6 +4,8 @@
 @inject DotaWebStatsContext DbContext
 @inject NavigationManager NavigationManager
 
+@rendermode InteractiveServer
+
 <h3>Add New Account</h3>
 
 <EditForm Model="@newAccount" OnValidSubmit="HandleValidSubmit" FormName="myForm">

@@ -2,19 +2,18 @@
 @using ModelClasses
 @using DataBase
 @using Microsoft.EntityFrameworkCore
-@inject DotaWebStatsContext DbContext
+@inject UserAccountController AccountController
 @inject NavigationManager NavigationManager
+
+@rendermode InteractiveServer
 
 <PageTitle>Dota 2 Statistics</PageTitle>
 
 <h1>Dota 2 Account Statistics</h1>
 
-@* <div class="mb-3"> *@
-@*    <button class="btn btn-primary" @onclick="AddAccount">Add New Account</button> *@
-@* </div> *@
-
-@* <button class="btn btn-primary" @onclick:preventDefault="AddAccount">Add New Account</button> *@
-<a href="/add-account" class="btn btn-primary">Add New Account</a>
+<div class="mb-3">
+   <button class="btn btn-primary" @onclick="AddAccount">Add New Account</button>
+</div>
 
 @if (accounts == null)
 {
@@ -41,8 +40,8 @@ else
                     <td>@account.UserName</td>
                     <td>@account.CurrentMMR</td>
                     <td>@(account.GoalMMR - account.CurrentMMR)</td>
-                    <td>@account.RegularMatches</td>
-                    <td>@account.DoubleMatches</td>
+                    <td>@AccountController.CalculateRegular(account)</td>
+                    <td>@AccountController.CalculateDouble(account)</td>
                     <td>@account.GoalMMR</td>
                     <td>
                         <button class="btn btn-sm btn-info" @onclick="() => ViewDetails(account.Id)">View</button>
@@ -60,7 +59,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        accounts = await DbContext.UserAccounts.ToListAsync();
+        accounts = await AccountController.GetAccountsAsync();
     }
 
     private void AddAccount()
@@ -81,12 +80,7 @@ else
 
     private async Task DeleteAccount(long id)
     {
-        var account = await DbContext.UserAccounts.FindAsync(id);
-        if (account != null)
-        {
-            DbContext.UserAccounts.Remove(account);
-            await DbContext.SaveChangesAsync();
-            accounts.Remove(account);
-        }
+        await AccountController.DeleteAccountAsync(id);
+        accounts = await AccountController.GetAccountsAsync();
     }
 }
