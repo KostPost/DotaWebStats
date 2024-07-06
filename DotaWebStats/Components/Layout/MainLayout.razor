@@ -6,6 +6,8 @@
 @inject SteamAuthService AuthService
 @inject ISteamDataService SteamDataService
 
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -16,13 +18,23 @@
             @if (!string.IsNullOrEmpty(SteamUserData?.PersonaName))
             {
                 <div class="user-info">
-                    <img src="@SteamUserData.AvatarFull" alt="User Avatar" class="user-avatar" />
-                    <span class="username">@SteamUserData.PersonaName</span>
+                    <div class="dropdown">
+                        <button class="btn btn-link dropdown-toggle" @onclick="ToggleDropdown">
+                            <img src="@SteamUserData.AvatarFull" alt="User Avatar" class="user-avatar" />
+                            <span class="username">@SteamUserData.PersonaName</span>
+                        </button>
+                        <div class="@($"dropdown-menu {(showDropdown ? "show" : "")}")">
+                            <a class="dropdown-item" href="#">Log Out</a>
+                            <a class="dropdown-item" href="#">Settings</a>
+                        </div>
+                    </div>
                 </div>
             }
             else
             {
-                <a href="/authentication" class="btn btn-primary">Sign in with Steam</a>
+                @* <a href="/authentication" class="btn btn-primary">Sign in with Steam</a> *@
+                <button @onclick="AuthenticationStart">Sign in with Steam</button>
+
             }
         </div>
 
@@ -39,8 +51,17 @@
 </div>
 
 @code {
-    private SteamUserData.Player SteamUserData { get; set; }
+    
 
+    private SteamUserData.Player SteamUserData { get; set; }
+    private bool showDropdown = false;
+
+    private void AuthenticationStart()
+    {
+        AuthService.InitializeAsync();
+        //AuthService.InitiateSteamAuth();
+    }
+    
     protected override async Task OnInitializedAsync()
     {
         var uri = new Uri(NavigationManager.Uri);
@@ -52,5 +73,10 @@
             var steamId = steamIdParam.Split('/').Last();
             SteamUserData = await SteamDataService.GetPlayerSummary(steamId);
         }
+    }
+
+    private void ToggleDropdown()
+    {
+        showDropdown = !showDropdown;
     }
 }
