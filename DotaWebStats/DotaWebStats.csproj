@@ -18,10 +18,4 @@
       <ProjectReference Include="..\ModelClasses\ModelClasses.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Update="Components\Pages\SteamAuthService.cs">
-        <DependentUpon>Authentication.razor</DependentUpon>
-      </Compile>
-    </ItemGroup>
-
 </Project>

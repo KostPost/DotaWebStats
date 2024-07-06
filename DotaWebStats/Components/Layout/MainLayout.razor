@@ -3,10 +3,8 @@
 @using Services
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
-@inject SteamAuthService AuthService
+@inject ISteamAuthService AuthService
 @inject ISteamDataService SteamDataService
-
-@using static Microsoft.AspNetCore.Components.Web.RenderMode
 
 <div class="page">
     <div class="sidebar">
@@ -24,7 +22,7 @@
                             <span class="username">@SteamUserData.PersonaName</span>
                         </button>
                         <div class="@($"dropdown-menu {(showDropdown ? "show" : "")}")">
-                            <a class="dropdown-item" href="#">Log Out</a>
+                            <a class="dropdown-item" href="#" @onclick="Logout">Log Out</a>
                             <a class="dropdown-item" href="#">Settings</a>
                         </div>
                     </div>
@@ -32,9 +30,7 @@
             }
             else
             {
-                @* <a href="/authentication" class="btn btn-primary">Sign in with Steam</a> *@
                 <button @onclick="AuthenticationStart">Sign in with Steam</button>
-
             }
         </div>
 
@@ -51,32 +47,38 @@
 </div>
 
 @code {
-    
-
     private SteamUserData.Player SteamUserData { get; set; }
     private bool showDropdown = false;
 
-    private void AuthenticationStart()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        AuthService.InitializeAsync();
-        //AuthService.InitiateSteamAuth();
-    }
-    
-    protected override async Task OnInitializedAsync()
-    {
-        var uri = new Uri(NavigationManager.Uri);
-        var queryParams = System.Web.HttpUtility.ParseQueryString(uri.Query);
-        var steamIdParam = queryParams["openid.claimed_id"];
-
-        if (!string.IsNullOrEmpty(steamIdParam))
+        if (firstRender)
         {
-            var steamId = steamIdParam.Split('/').Last();
-            SteamUserData = await SteamDataService.GetPlayerSummary(steamId);
+            await AuthService.InitializeAsync();
+            var steamId = AuthService.SteamId;
+
+            if (!string.IsNullOrEmpty(steamId))
+            {
+                SteamUserData = await SteamDataService.GetPlayerSummary(steamId);
+                StateHasChanged(); // Ensure component re-renders after data is fetched
+            }
         }
     }
 
     private void ToggleDropdown()
     {
         showDropdown = !showDropdown;
+    }
+
+    private void AuthenticationStart()
+    {
+        AuthService.InitiateSteamAuth();
+    }
+
+    private async Task Logout()
+    {
+        await AuthService.LogoutAsync();
+        SteamUserData = null;
+        NavigationManager.NavigateTo("/", forceLoad: true);
     }
 }
