@@ -17,6 +17,5 @@ public class SteamUserData
         public string Steamid { get; set; }
         public string PersonaName { get; set; }
         public string AvatarFull { get; set; }
-        // Add any other properties that appear in the JSON
     }
 }

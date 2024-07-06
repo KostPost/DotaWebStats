@@ -10,15 +10,18 @@
       <None Update="Components\Pages\Index.css">
         <DependentUpon>Index.razor</DependentUpon>
       </None>
-      <None Update="Components\Pages\AddAccount.css">
-        <DependentUpon>AddAccount.razor</DependentUpon>
-      </None>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Controllers\Controllers.csproj" />
+      <ProjectReference Include="..\Services\Services.csproj" />
       <ProjectReference Include="..\DataBase\DataBase.csproj" />
       <ProjectReference Include="..\ModelClasses\ModelClasses.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Components\Pages\SteamAuthService.cs">
+        <DependentUpon>Authentication.razor</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

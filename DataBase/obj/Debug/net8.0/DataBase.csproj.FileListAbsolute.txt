@@ -9,10 +9,10 @@ P:\DotaWebStats\DataBase\obj\Debug\net8.0\DataBase.GeneratedMSBuildEditorConfig.
 P:\DotaWebStats\DataBase\obj\Debug\net8.0\DataBase.AssemblyInfoInputs.cache
 P:\DotaWebStats\DataBase\obj\Debug\net8.0\DataBase.AssemblyInfo.cs
 P:\DotaWebStats\DataBase\obj\Debug\net8.0\DataBase.csproj.CoreCompileInputs.cache
+P:\DotaWebStats\DataBase\obj\Debug\net8.0\DataBase.sourcelink.json
 P:\DotaWebStats\DataBase\obj\Debug\net8.0\DataBase.csproj.Up2Date
 P:\DotaWebStats\DataBase\obj\Debug\net8.0\DataBase.dll
 P:\DotaWebStats\DataBase\obj\Debug\net8.0\refint\DataBase.dll
 P:\DotaWebStats\DataBase\obj\Debug\net8.0\DataBase.pdb
 P:\DotaWebStats\DataBase\obj\Debug\net8.0\DataBase.genruntimeconfig.cache
 P:\DotaWebStats\DataBase\obj\Debug\net8.0\ref\DataBase.dll
-P:\DotaWebStats\DataBase\obj\Debug\net8.0\DataBase.sourcelink.json

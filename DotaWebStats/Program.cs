@@ -1,6 +1,11 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
 using DotaWebStats.Components;
-using DataBase;
-using Microsoft.EntityFrameworkCore;
+using DotaWebStats.Components.Pages;
+using Services; // Add the namespace for your services
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,13 +14,10 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddHttpClient();
+builder.Services.AddScoped<ISteamDataService, SteamDataService>(); // Register the SteamDataService
 
-// Register the DbContext with the connection string from configuration
-builder.Services.AddDbContext<DotaWebStatsContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// Register the UserAccountController as a scoped service
-builder.Services.AddScoped<UserAccountController>();
+// Register the SteamAuthService
+builder.Services.AddScoped<SteamAuthService>();
 
 var app = builder.Build();
 
@@ -23,13 +25,10 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. Consider changing this for production scenarios, see https://aka.ms/aspnetcore-hsts
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-
-
 app.UseStaticFiles();
 app.UseAntiforgery();
 

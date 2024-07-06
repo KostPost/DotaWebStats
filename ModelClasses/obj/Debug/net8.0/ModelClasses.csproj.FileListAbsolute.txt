@@ -5,8 +5,8 @@ P:\DotaWebStats\ModelClasses\obj\Debug\net8.0\ModelClasses.GeneratedMSBuildEdito
 P:\DotaWebStats\ModelClasses\obj\Debug\net8.0\ModelClasses.AssemblyInfoInputs.cache
 P:\DotaWebStats\ModelClasses\obj\Debug\net8.0\ModelClasses.AssemblyInfo.cs
 P:\DotaWebStats\ModelClasses\obj\Debug\net8.0\ModelClasses.csproj.CoreCompileInputs.cache
+P:\DotaWebStats\ModelClasses\obj\Debug\net8.0\ModelClasses.sourcelink.json
 P:\DotaWebStats\ModelClasses\obj\Debug\net8.0\ModelClasses.dll
 P:\DotaWebStats\ModelClasses\obj\Debug\net8.0\refint\ModelClasses.dll
 P:\DotaWebStats\ModelClasses\obj\Debug\net8.0\ModelClasses.pdb
 P:\DotaWebStats\ModelClasses\obj\Debug\net8.0\ref\ModelClasses.dll
-P:\DotaWebStats\ModelClasses\obj\Debug\net8.0\ModelClasses.sourcelink.json

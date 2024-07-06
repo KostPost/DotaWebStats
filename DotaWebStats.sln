@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelClasses", "ModelClasse
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBase", "DataBase\DataBase.csproj", "{99A8AEEB-1DB8-4659-BBB9-D423185C16B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controllers", "Controllers\Controllers.csproj", "{C6A467F5-9D70-48F3-AB96-08D28425D983}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{C6A467F5-9D70-48F3-AB96-08D28425D983}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
