@@ -22,7 +22,8 @@
                             <span class="username">@SteamUserData.PersonaName</span>
                         </button>
                         <div class="@($"dropdown-menu {(showDropdown ? "show" : "")}")">
-                            <a class="dropdown-item" href="#" @onclick="Logout">Log Out</a>
+                            <a class="dropdown-item" @onclick="NavigateToProfile" href="javascript:void(0);">My profile</a>
+                            <a class="dropdown-item" @onclick="Logout" href="javascript:void(0);">Log Out</a>
                             <a class="dropdown-item" href="#">Settings</a>
                         </div>
                     </div>
@@ -80,5 +81,30 @@
         await AuthService.LogoutAsync();
         SteamUserData = null;
         NavigationManager.NavigateTo("/", forceLoad: true);
+    }
+
+    private void NavigateToProfile()
+    {
+        // Console.WriteLine(SteamUserData.Dota2Id + " \n " + SteamUserData.Steamid);
+        if (SteamUserData != null)
+        {
+            if (!string.IsNullOrEmpty(SteamUserData.Dota2Id))
+            {
+                NavigationManager.NavigateTo($"/players/{SteamUserData.Dota2Id}");
+            }
+            else if (!string.IsNullOrEmpty(SteamUserData.Steamid))
+            {
+                // If Dota2Id is not available, we'll use SteamId and convert it on the profile page
+                NavigationManager.NavigateTo($"/players/{SteamUserData.Steamid}");
+            }
+            else
+            {
+                Console.WriteLine("Neither Dota2Id nor SteamId is available for navigation.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("User data is not available.");
+        }
     }
 }

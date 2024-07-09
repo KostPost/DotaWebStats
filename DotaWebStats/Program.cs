@@ -19,6 +19,7 @@ builder.Services.AddScoped<ISteamDataService, SteamDataService>(); // Register t
 // Register the SteamAuthService
 builder.Services.AddScoped<SteamAuthService>();
 builder.Services.AddScoped<ISteamAuthService, SteamAuthService>();
+builder.Services.AddScoped<IDotaDataService, DotaDataService>();
 
 
 var app = builder.Build();

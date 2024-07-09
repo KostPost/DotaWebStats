@@ -22,16 +22,16 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[P:/DotaWebStats/DotaWebStats/Components/Pages/Authentication.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBdXRoZW50aWNhdGlvbi5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
 [P:/DotaWebStats/DotaWebStats/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [P:/DotaWebStats/DotaWebStats/Components/Pages/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xJbmRleC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[P:/DotaWebStats/DotaWebStats/Components/Pages/UserPage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyUGFnZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [P:/DotaWebStats/DotaWebStats/Components/Routes.razor]

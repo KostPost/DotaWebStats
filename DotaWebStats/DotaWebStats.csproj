@@ -18,4 +18,10 @@
       <ProjectReference Include="..\ModelClasses\ModelClasses.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Components\Pages\UserPage.cs">
+        <DependentUpon>UserPage.razor</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>
