@@ -1,17 +1,12 @@
 ﻿@page "/players/{Dota2Id}"
-@using ModelClasses
-@using Services
 
 <h1>Player Profile</h1>
 
-@if (player != null && matchStats != null)
+@if (player != null)
 {
     <div class="player-profile">
         <img src="@player.AvatarFull" alt="@player.PersonaName's avatar"/>
         <h2>@player.PersonaName</h2>
-        <p>Wins: @matchStats.Wins</p>
-        <p>Losses: @matchStats.Losses</p>
-        <p>Win Rate: @matchStats.WinRate.ToString("P2")</p>
         <a href="https://steamcommunity.com/profiles/@player.Steamid" target="_blank" class="btn btn-primary">Steam Profile</a>
     </div>
 }
