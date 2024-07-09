@@ -56,15 +56,22 @@
         if (firstRender)
         {
             await AuthService.InitializeAsync();
-            var steamId = AuthService.SteamId;
+            var steamIdNullable = AuthService.SteamId;
 
-            if (!string.IsNullOrEmpty(steamId))
+            if (steamIdNullable.HasValue && steamIdNullable.Value != 0)
             {
+                long steamId = steamIdNullable.Value;
                 SteamUserData = await SteamDataService.GetPlayerSummary(steamId);
                 StateHasChanged(); // Ensure component re-renders after data is fetched
             }
+            else
+            {
+                // Handle the case where steamId is null or zero
+                Console.WriteLine("Steam ID is not available or is zero.");
+            }
         }
     }
+
 
     private void ToggleDropdown()
     {
@@ -88,7 +95,7 @@
         // Console.WriteLine(SteamUserData.Dota2Id + " \n " + SteamUserData.Steamid);
         if (SteamUserData != null)
         {
-            if (!string.IsNullOrEmpty(SteamUserData.Dota2Id))
+            if (SteamUserData.Dota2Id != 0)
             {
                 NavigationManager.NavigateTo($"/players/{SteamUserData.Dota2Id}");
             }
@@ -107,4 +114,5 @@
             Console.WriteLine("User data is not available.");
         }
     }
+
 }

@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Microsoft.JSInterop;
-
+using System.Text.Json;
 
 namespace Services
 {
@@ -10,7 +14,7 @@ namespace Services
         Task InitializeAsync();
         void InitiateSteamAuth();
         Task LogoutAsync();
-        string SteamId { get; }
+        long? SteamId { get; }
     }
 
     public class SteamAuthService : ISteamAuthService
@@ -20,9 +24,10 @@ namespace Services
         private readonly IConfiguration _configuration;
         private const string RedirectUri = "https://localhost:1234/";
             
-        public string SteamId { get; private set; }
+        public long? SteamId { get; private set; }
         private string ApiKey;
-        public string Dota2Id { get; private set; }
+        public long? Dota2Id { get; private set; }
+
         public SteamAuthService(NavigationManager navigationManager, IJSRuntime jsRuntime, IConfiguration configuration)
         {
             _navigationManager = navigationManager;
@@ -30,24 +35,10 @@ namespace Services
             _configuration = configuration;
         }
         
-        private string ConvertSteamIdToDota2Id(string steamId)
+        private long? ConvertSteamIdToDota2Id(long steamId)
         {
-            if (string.IsNullOrEmpty(steamId) || !steamId.All(char.IsDigit))
-            {
-                return null;
-            }
-
-            // Convert SteamId to long
-            if (!long.TryParse(steamId, out long steamId64))
-            {
-                return null;
-            }
-
-            // The magic number is the difference between Steam ID and Dota 2 ID
             const long steamIdToDota2IdDiff = 76561197960265728;
-            long dota2Id = steamId64 - steamIdToDota2IdDiff;
-
-            return dota2Id.ToString();
+            return steamId - steamIdToDota2IdDiff;
         }
 
         public async Task InitializeAsync()
@@ -59,22 +50,34 @@ namespace Services
 
             if (!string.IsNullOrEmpty(steamIdParam))
             {
-                SteamId = steamIdParam.Split('/').Last();
-                await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "steamId", SteamId);
+                var steamIdString = steamIdParam.Split('/').Last();
+                if (long.TryParse(steamIdString, out long steamId))
+                {
+                    SteamId = steamId;
+                    await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "steamId", steamId.ToString());
+                }
             }
             else
             {
-                SteamId = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "steamId");
+                var storedSteamId = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "steamId");
+                if (long.TryParse(storedSteamId, out long steamId))
+                {
+                    SteamId = steamId;
+                }
             }
 
-            if (!string.IsNullOrEmpty(SteamId))
+            if (SteamId.HasValue)
             {
-                Dota2Id = ConvertSteamIdToDota2Id(SteamId);
-                await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "dota2Id", Dota2Id);
+                Dota2Id = ConvertSteamIdToDota2Id(SteamId.Value);
+                await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "dota2Id", Dota2Id.ToString());
             }
             else
             {
-                Dota2Id = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "dota2Id");
+                var storedDota2Id = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "dota2Id");
+                if (long.TryParse(storedDota2Id, out long dota2Id))
+                {
+                    Dota2Id = dota2Id;
+                }
             }
         }
 
@@ -99,7 +102,9 @@ namespace Services
         public async Task LogoutAsync()
         {
             SteamId = null;
+            Dota2Id = null;
             await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", "steamId");
+            await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", "dota2Id");
         }
     }
 }

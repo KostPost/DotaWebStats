@@ -15,7 +15,7 @@ public class SteamUserData
     public class Player
     {
         public string Steamid { get; set; }
-        public string Dota2Id { get; set; } // Add this line
+        public long Dota2Id { get; set; } 
         public string PersonaName { get; set; }
         public string AvatarFull { get; set; }
         public string Rank { get; set; }
