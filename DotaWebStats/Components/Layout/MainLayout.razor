@@ -61,10 +61,9 @@
             if (steamIdNullable.HasValue && steamIdNullable.Value != 0)
             {
                 long steamId = steamIdNullable.Value;
-                string steamIdString = steamId.ToString(); 
 
-                Console.WriteLine("MainLAyout - " + steamIdString);
-                SteamUserData = await SteamDataService.GetPlayerSummary(steamIdString);
+                Console.WriteLine("MainLAyout - " + steamId);
+                SteamUserData = await SteamDataService.GetPlayerSummary(steamId);
                 StateHasChanged(); 
             }
             else

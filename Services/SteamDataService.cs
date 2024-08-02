@@ -7,7 +7,7 @@ namespace Services
 {
     public interface ISteamDataService
     {
-        Task<SteamUserData.Player?> GetPlayerSummary(string steamId);
+        Task<SteamUserData.Player?> GetPlayerSummary(long steamId);
     }
 
     public class SteamDataService : ISteamDataService
@@ -21,11 +21,12 @@ namespace Services
             _httpClient = httpClientFactory.CreateClient();
         }
 
-        public async Task<SteamUserData.Player?> GetPlayerSummary(string steamId)
+        
+        public async Task<SteamUserData.Player?> GetPlayerSummary(long steamId)
         {
             var steamApiKey = ApiConstants.GetSteamApiKey(_configuration);
 
-            var response = await _httpClient.GetAsync(ApiConstants.SteamApi.GetPlayerSummaries(steamApiKey, steamId));
+            var response = await _httpClient.GetAsync(ApiConstants.SteamApi.GetPlayerSummaries(steamApiKey, steamId.ToString()));
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
@@ -38,11 +39,7 @@ namespace Services
 
                     if (player != null)
                     {
-                        if (long.TryParse(player.Steamid, out long parsedSteamId))
-                        {
-                            player.Dota2Id = parsedSteamId - NumConstats.SteamIdToDota2IdDiff;
-                        }
-
+                        player.Dota2Id = steamId - NumConstats.SteamIdToDota2IdDiff;
                         return player;
                     }
 
@@ -54,7 +51,7 @@ namespace Services
                     return null;
                 }
             }
-            
+    
             Console.WriteLine($"API request failed with status code: {response.StatusCode}");
             return null;
         }
