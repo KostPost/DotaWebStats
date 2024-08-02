@@ -21,7 +21,7 @@
                             <img src="@SteamUserData.AvatarFull" alt="User Avatar" class="user-avatar" />
                             <span class="username">@SteamUserData.PersonaName</span>
                         </button>
-                        <div class="@($"dropdown-menu {(showDropdown ? "show" : "")}")">
+                        <div class="@($"dropdown-menu {(_showDropdown ? "show" : "")}")">
                             <a class="dropdown-item" @onclick="NavigateToProfile" href="javascript:void(0);">My profile</a>
                             <a class="dropdown-item" @onclick="Logout" href="javascript:void(0);">Log Out</a>
                             <a class="dropdown-item" href="#">Settings</a>
@@ -48,8 +48,8 @@
 </div>
 
 @code {
-    private SteamUserData.Player SteamUserData { get; set; }
-    private bool showDropdown = false;
+    private SteamUserData.Player? SteamUserData { get; set; }
+    private bool _showDropdown;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -61,11 +61,11 @@
             if (steamIdNullable.HasValue && steamIdNullable.Value != 0)
             {
                 long steamId = steamIdNullable.Value;
-                string steamIdString = steamId.ToString(); // Convert long to string
+                string steamIdString = steamId.ToString(); 
 
                 Console.WriteLine("MainLAyout - " + steamIdString);
                 SteamUserData = await SteamDataService.GetPlayerSummary(steamIdString);
-                StateHasChanged(); // Ensure component re-renders after data is fetched
+                StateHasChanged(); 
             }
             else
             {
@@ -79,7 +79,7 @@
 
     private void ToggleDropdown()
     {
-        showDropdown = !showDropdown;
+        _showDropdown = !_showDropdown;
     }
 
     private void AuthenticationStart()
@@ -101,12 +101,12 @@
         {
             if (SteamUserData.Dota2Id != 0)
             {
-                NavigationManager.NavigateTo($"/players/{SteamUserData.Dota2Id}");
+                NavigationManager.NavigateTo($"/player/{SteamUserData.Dota2Id}");
             }
             else if (!string.IsNullOrEmpty(SteamUserData.Steamid))
             {
                 // If Dota2Id is not available, we'll use SteamId and convert it on the profile page
-                NavigationManager.NavigateTo($"/players/{SteamUserData.Steamid}");
+                NavigationManager.NavigateTo($"/player/{SteamUserData.Steamid}");
             }
             else
             {

@@ -1,23 +1,19 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Linq;
-using System.Net.Http;
 using System.Text.Json;
-using System.Threading.Tasks;
 using ModelClasses;
+using Services.Constants;
 
 namespace Services
 {
     public interface ISteamDataService
     {
-        Task<SteamUserData.Player> GetPlayerSummary(string steamId);
+        Task<SteamUserData.Player?> GetPlayerSummary(string steamId);
     }
 
     public class SteamDataService : ISteamDataService
     {
         private readonly IConfiguration _configuration;
         private readonly HttpClient _httpClient;
-        private const long SteamIdToDota2IdDiff = 76561197960265728;
 
         public SteamDataService(IConfiguration configuration, IHttpClientFactory httpClientFactory)
         {
@@ -25,11 +21,11 @@ namespace Services
             _httpClient = httpClientFactory.CreateClient();
         }
 
-        public async Task<SteamUserData.Player> GetPlayerSummary(string steamId)
+        public async Task<SteamUserData.Player?> GetPlayerSummary(string steamId)
         {
-            string steamApiKey = _configuration["Steam:ApiKey"];
-            var response = await _httpClient.GetAsync($"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={steamApiKey}&steamids={steamId}");
+            var steamApiKey = ApiConstants.GetSteamApiKey(_configuration);
 
+            var response = await _httpClient.GetAsync(ApiConstants.SteamApi.GetPlayerSummaries(steamApiKey, steamId));
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
@@ -42,13 +38,14 @@ namespace Services
 
                     if (player != null)
                     {
-                        // Convert the steamid from string to long
                         if (long.TryParse(player.Steamid, out long parsedSteamId))
                         {
-                            player.Dota2Id = parsedSteamId - SteamIdToDota2IdDiff;
+                            player.Dota2Id = parsedSteamId - NumConstats.SteamIdToDota2IdDiff;
                         }
+
                         return player;
                     }
+
                     return null;
                 }
                 catch (JsonException ex)
@@ -57,11 +54,9 @@ namespace Services
                     return null;
                 }
             }
-            else
-            {
-                Console.WriteLine($"API request failed with status code: {response.StatusCode}");
-                return null;
-            }
+            
+            Console.WriteLine($"API request failed with status code: {response.StatusCode}");
+            return null;
         }
     }
 }

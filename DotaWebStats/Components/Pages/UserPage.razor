@@ -1,22 +1,22 @@
-﻿@page "/players/{Dota2Id}"
+﻿@page "/player/{Dota2Id}"
 
 <h1>Player Profile</h1>
 
-@if (player != null)
+@if (_player != null)
 {
     <div class="player-profile">
-        <img src="@player.AvatarFull" alt="@player.PersonaName's avatar"/>
-        <h2>@player.PersonaName</h2>
-        <a href="https://steamcommunity.com/profiles/@player.Steamid" target="_blank" class="btn btn-primary">Steam Profile</a>
+        <img src="@_player.AvatarFull" alt="@_player.PersonaName's avatar"/>
+        <h2>@_player.PersonaName</h2>
+        <a href="https://steamcommunity.com/profiles/@_player.Steamid" target="_blank" class="btn btn-primary">Steam Profile</a>
     </div>
 }
-else if (isLoading)
+else if (_isLoading)
 {
     <p>Loading player data...</p>
 }
-else if (!string.IsNullOrEmpty(errorMessage))
+else if (!string.IsNullOrEmpty(_errorMessage))
 {
-    <p class="text-danger">Error: @errorMessage</p>
+    <p class="text-danger">Error: @_errorMessage</p>
 }
 else
 {

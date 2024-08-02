@@ -1,70 +1,63 @@
 ﻿using Microsoft.AspNetCore.Components;
 using ModelClasses;
 using Services;
-using System.Threading.Tasks;
 
 namespace DotaWebStats.Components.Pages;
 
 public partial class UserPage
 {
-    [Parameter] public string Dota2Id { get; set; }
+    [Parameter] public long Dota2Id { get; set; } 
+    public 
 
-    private SteamUserData.Player player;
-    private bool isLoading = true;
-    private string errorMessage;
+    private SteamUserData.Player? _player;
+    private bool _isLoading = true;
+    private string? _errorMessage;
 
-    [Inject] private ISteamDataService SteamDataService { get; set; }
-    [Inject] private ILogger<UserPage> Logger { get; set; }
-    [Inject] private ISteamAuthService AuthService { get; set; }
+    [Inject] private ISteamDataService SteamDataService { get; set; } = null!;
+    [Inject] private ILogger<UserPage> Logger { get; set; } = null!;
 
     protected override async Task OnInitializedAsync()
     {
-        await InitializeUserData();
+        await LoadUserData();
     }
 
-    protected override async Task OnParametersSetAsync()
-    {
-        await InitializeUserData();
-    }
+    private string? _previousDota2Id;
+    
 
-    private async Task InitializeUserData()
+    private async Task LoadUserData()
     {
-        isLoading = true;
-        errorMessage = null;
+        
+        
+        _isLoading = true;
+        _errorMessage = null;
         try
         {
-            await AuthService.InitializeAsync();
-
-            var steamIdNullable = AuthService.SteamId;
-            if (steamIdNullable.HasValue && steamIdNullable.Value != 0)
+            if (!string.IsNullOrEmpty(Dota2Id))
             {
-                long steamId = steamIdNullable.Value;
-                string steamIdString = steamId.ToString();
+                _player = await SteamDataService.GetPlayerSummary(Dota2Id);
 
-                player = await SteamDataService.GetPlayerSummary(steamIdString);
-
-                if (player != null)
+                if (_player != null)
                 {
-                    Console.WriteLine($"Player loaded: {player.PersonaName}");
+                    Console.WriteLine($"Player loaded: {_player.PersonaName}");
                 }
                 else
                 {
-                    errorMessage = "Player data not found.";
+                    _errorMessage = "Player data not found.";
                 }
             }
             else
             {
-                errorMessage = "Steam ID is not available or is zero.";
+                _errorMessage = "Invalid Dota 2 ID.";
             }
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, $"Failed to initialize or load player data for Dota2ID: {Dota2Id}");
-            errorMessage = $"Failed to load player data: {ex.Message}";
+            Logger.LogError(ex, $"Failed to load player data for Dota2ID: {Dota2Id}");
+            _errorMessage = $"Failed to load player data: {ex.Message}";
         }
         finally
         {
-            isLoading = false;
+            _isLoading = false;
         }
     }
 }

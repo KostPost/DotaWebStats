@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ModelClasses;
 
+namespace Services;
 public interface IDotaDataService
 {
 

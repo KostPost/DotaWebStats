@@ -1,11 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System.Text.Json;
+using Services.Constants;
 
 namespace Services
 {
@@ -21,29 +16,26 @@ namespace Services
     {
         private readonly NavigationManager _navigationManager;
         private readonly IJSRuntime _jsRuntime;
-        private readonly IConfiguration _configuration;
-        private const string RedirectUri = "https://localhost:1234/";
-            
-        public long? SteamId { get; private set; }
-        private string ApiKey;
-        public long? Dota2Id { get; private set; }
+        // private readonly IConfiguration _configuration;
+        private const string RedirectUri = UrlConstants.IndexPage;
 
-        public SteamAuthService(NavigationManager navigationManager, IJSRuntime jsRuntime, IConfiguration configuration)
+        public long? SteamId { get; private set; }
+        private long? Dota2Id { get;  set; }
+
+        public SteamAuthService(NavigationManager navigationManager, IJSRuntime jsRuntime)
         {
             _navigationManager = navigationManager;
             _jsRuntime = jsRuntime;
-            _configuration = configuration;
+            // _configuration = configuration;
         }
-        
+
         private long? ConvertSteamIdToDota2Id(long steamId)
         {
-            const long steamIdToDota2IdDiff = 76561197960265728;
-            return steamId - steamIdToDota2IdDiff;
+            return steamId - NumConstats.SteamIdToDota2IdDiff;
         }
 
         public async Task InitializeAsync()
         {
-            ApiKey = _configuration["Steam:ApiKey"];
             var uri = new Uri(_navigationManager.Uri);
             var queryParams = System.Web.HttpUtility.ParseQueryString(uri.Query);
             var steamIdParam = queryParams["openid.claimed_id"];
@@ -87,15 +79,16 @@ namespace Services
             var steamOpenIdUrl = "https://steamcommunity.com/openid/login";
             var parameters = new Dictionary<string, string>
             {
-                {"openid.ns", "http://specs.openid.net/auth/2.0"},
-                {"openid.mode", "checkid_setup"},
-                {"openid.return_to", RedirectUri},
-                {"openid.realm", "https://localhost:1234"},
-                {"openid.identity", "http://specs.openid.net/auth/2.0/identifier_select"},
-                {"openid.claimed_id", "http://specs.openid.net/auth/2.0/identifier_select"}
+                { "openid.ns", "http://specs.openid.net/auth/2.0" },
+                { "openid.mode", "checkid_setup" },
+                { "openid.return_to", RedirectUri },
+                { "openid.realm", "https://localhost:1234" },
+                { "openid.identity", "http://specs.openid.net/auth/2.0/identifier_select" },
+                { "openid.claimed_id", "http://specs.openid.net/auth/2.0/identifier_select" }
             };
 
-            var url = $"{steamOpenIdUrl}?{string.Join("&", parameters.Select(kvp => $"{kvp.Key}={Uri.EscapeDataString(kvp.Value)}"))}";
+            var url =
+                $"{steamOpenIdUrl}?{string.Join("&", parameters.Select(kvp => $"{kvp.Key}={Uri.EscapeDataString(kvp.Value)}"))}";
             _navigationManager.NavigateTo(url, forceLoad: true);
         }
 
