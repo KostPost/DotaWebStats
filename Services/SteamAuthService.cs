@@ -26,7 +26,6 @@ namespace Services
         {
             _navigationManager = navigationManager;
             _jsRuntime = jsRuntime;
-            // _configuration = configuration;
         }
 
         private long? ConvertSteamIdToDota2Id(long steamId)
@@ -72,7 +71,6 @@ namespace Services
                 }
             }
         }
-
         public void InitiateSteamAuth()
         {
             Console.WriteLine("Initiating Steam authentication...");
@@ -86,7 +84,7 @@ namespace Services
                 { "openid.identity", "http://specs.openid.net/auth/2.0/identifier_select" },
                 { "openid.claimed_id", "http://specs.openid.net/auth/2.0/identifier_select" }
             };
-
+        
             var url =
                 $"{steamOpenIdUrl}?{string.Join("&", parameters.Select(kvp => $"{kvp.Key}={Uri.EscapeDataString(kvp.Value)}"))}";
             _navigationManager.NavigateTo(url, forceLoad: true);

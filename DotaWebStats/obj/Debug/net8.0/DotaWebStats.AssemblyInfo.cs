@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DotaWebStats")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fcaf23fa82d82330d19f3a12d2740a8c0216bedf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+afe7bf055e2b650ba8ead25b26e86bed5e82d149")]
 [assembly: System.Reflection.AssemblyProductAttribute("DotaWebStats")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DotaWebStats")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

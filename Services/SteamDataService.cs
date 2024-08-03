@@ -35,11 +35,13 @@ namespace Services
                 try
                 {
                     var playerSummary = JsonSerializer.Deserialize<SteamUserData.SteamPlayerSummary>(content, options);
-                    var player = playerSummary?.Response?.Players?.FirstOrDefault();
+                    var player = playerSummary?.Response.Players.FirstOrDefault();
 
                     if (player != null)
                     {
-                        player.Dota2Id = steamId - NumConstats.SteamIdToDota2IdDiff;
+                        var tempDota2Id = steamId - NumConstats.SteamIdToDota2IdDiff;
+
+                        player.Dota2Id = tempDota2Id.ToString();
                         return player;
                     }
 

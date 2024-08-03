@@ -1,6 +1,6 @@
-﻿@using DotaWebStats.Components.Pages
-@using ModelClasses
+﻿@using ModelClasses
 @using Services
+@using Services.Constants
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 @inject ISteamAuthService AuthService
@@ -46,76 +46,3 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
-
-@code {
-    private SteamUserData.Player? SteamUserData { get; set; }
-    private bool _showDropdown;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await AuthService.InitializeAsync();
-            var steamIdNullable = AuthService.SteamId;
-
-            if (steamIdNullable.HasValue && steamIdNullable.Value != 0)
-            {
-                long steamId = steamIdNullable.Value;
-
-                Console.WriteLine("MainLAyout - " + steamId);
-                SteamUserData = await SteamDataService.GetPlayerSummary(steamId);
-                StateHasChanged(); 
-            }
-            else
-            {
-                // Handle the case where steamId is null or zero
-                Console.WriteLine("Steam ID is not available or is zero.");
-            }
-        }
-    }
-
-
-
-    private void ToggleDropdown()
-    {
-        _showDropdown = !_showDropdown;
-    }
-
-    private void AuthenticationStart()
-    {
-        AuthService.InitiateSteamAuth();
-    }
-
-    private async Task Logout()
-    {
-        await AuthService.LogoutAsync();
-        SteamUserData = null;
-        NavigationManager.NavigateTo("/", forceLoad: true);
-    }
-
-    private void NavigateToProfile()
-    {
-        // Console.WriteLine(SteamUserData.Dota2Id + " \n " + SteamUserData.Steamid);
-        if (SteamUserData != null)
-        {
-            if (SteamUserData.Dota2Id != 0)
-            {
-                NavigationManager.NavigateTo($"/player/{SteamUserData.Dota2Id}");
-            }
-            else if (!string.IsNullOrEmpty(SteamUserData.Steamid))
-            {
-                // If Dota2Id is not available, we'll use SteamId and convert it on the profile page
-                NavigationManager.NavigateTo($"/player/{SteamUserData.Steamid}");
-            }
-            else
-            {
-                Console.WriteLine("Neither Dota2Id nor SteamId is available for navigation.");
-            }
-        }
-        else
-        {
-            Console.WriteLine("User data is not available.");
-        }
-    }
-
-}

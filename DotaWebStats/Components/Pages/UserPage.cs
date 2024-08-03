@@ -7,9 +7,9 @@ namespace DotaWebStats.Components.Pages;
 
 public partial class UserPage
 {
-    [Parameter] public string Id { get; set; }
-    public long Dota2Id { get; set; }
-    public long SteamId { get; set; }
+    [Parameter] public string Id { get; set; } = string.Empty;
+    private long Dota2Id { get; set; }
+    private long SteamId { get; set; }
 
     private SteamUserData.Player? _player;
     private bool _isLoading = true;
