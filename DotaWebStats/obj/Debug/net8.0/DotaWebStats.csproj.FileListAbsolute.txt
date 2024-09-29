@@ -28,3 +28,4 @@ P:\DotaWebStats\DotaWebStats\obj\Debug\net8.0\refint\DotaWebStats.dll
 P:\DotaWebStats\DotaWebStats\obj\Debug\net8.0\DotaWebStats.pdb
 P:\DotaWebStats\DotaWebStats\obj\Debug\net8.0\DotaWebStats.genruntimeconfig.cache
 P:\DotaWebStats\DotaWebStats\obj\Debug\net8.0\ref\DotaWebStats.dll
+P:\DotaWebStats\DotaWebStats\obj\Debug\net8.0\DotaWebStats.sourcelink.json

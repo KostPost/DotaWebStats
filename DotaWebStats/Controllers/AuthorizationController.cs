@@ -1,6 +1,5 @@
 ﻿using DotaWebStats.Services;
 using Microsoft.AspNetCore.Mvc;
-using Services;
 
 namespace DotaWebStats.Controllers
 {

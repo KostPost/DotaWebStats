@@ -2,7 +2,6 @@
 
 public class Profile
 {
-    public long DotaId { get; set; }
     public string Personaname { get; set; }
     public string? Name { get; set; } 
     public bool Plus { get; set; }

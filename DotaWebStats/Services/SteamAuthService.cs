@@ -33,7 +33,7 @@ public class SteamAuthService : ISteamAuthService
 
     private long? ConvertSteamIdToDota2Id(long steamId)
     {
-        return steamId - NumConstats.SteamIdToDota2IdDiff;
+        return steamId - NumConstants.SteamIdToDota2IdDiff;
     }
 
     public async Task InitializeAsync(HttpContext httpContext)
