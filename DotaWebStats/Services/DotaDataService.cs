@@ -1,21 +1,22 @@
-﻿using System.Net;
+﻿namespace DotaWebStats.Services;
 
-namespace DotaWebStats.Services;
-
-using DotaWebStats.Constants;
-using DotaWebStats.Models;
+using Constants;
+using Models;
 
 using System.Text.Json;
-using Microsoft.Extensions.Configuration;
 
 public interface IDotaDataService
 {
     Task<UserDotaStats?> GetPlayerSummary(long id);
 
     Task<WinLoseStats?> GetPlayerWinLoss(long id);
+
+    string GetRankName(int rankTier);
+    
+    string GetRankImagePath(int rankTier);
 }
 
-public class DotaDataService(IConfiguration configuration, IHttpClientFactory httpClientFactory) : IDotaDataService
+public class DotaDataService(IHttpClientFactory httpClientFactory) : IDotaDataService
 {
     private readonly HttpClient _httpClient = httpClientFactory.CreateClient();
     
@@ -66,45 +67,62 @@ public class DotaDataService(IConfiguration configuration, IHttpClientFactory ht
         Console.WriteLine($"API request failed with status code: {response.StatusCode}");
         return null;
     }
-    
-    
     public async Task<WinLoseStats?> GetPlayerWinLoss(long id)
     {
         if (IdDifference(id) == 0)
         {
             return null;
         }
+
+        long dotaId = id;
         
-        var response = await _httpClient.GetAsync(ApiConstants.DotaApi.GetPlayerWinLoss(id));
-
-        if (response.IsSuccessStatusCode)
+        var response = await _httpClient.GetAsync(ApiConstants.DotaApi.GetPlayerWinLoss(dotaId));
+        if (!response.IsSuccessStatusCode)
         {
-            var content = await response.Content.ReadAsStringAsync();
-            try
-            {
-                var winLossData = JsonSerializer.Deserialize<WinLoseStats>(content, new JsonSerializerOptions 
-                { 
-                    PropertyNameCaseInsensitive = true,
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                });
-
-                return winLossData;
-            }
-            catch (JsonException ex)
-            {
-                Console.WriteLine($"Failed to deserialize win/loss API response: {ex.Message}");
-                return null;
-            }
+            Console.WriteLine($"API request failed with status code: {response.StatusCode}");
+            return null;
+        }
+        
+        
+        var content = await response.Content.ReadAsStringAsync();
+        if (string.IsNullOrEmpty(content))
+        {
+            Console.WriteLine("API response content is empty.");
+            return null;
         }
 
-        Console.WriteLine($"Win/Loss API request failed with status code: {response.StatusCode}");
-        return null;
+        try
+        {
+            var winLossData = JsonSerializer.Deserialize<WinLoseStats>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
+
+            if (winLossData == null)
+            {
+                Console.WriteLine("Deserialization resulted in null WinLoseStats.");
+                return null;
+            }
+
+            winLossData.WinRate = CalculateWinRate(winLossData.Win, winLossData.Lose);
+
+            return winLossData;
+        }
+        catch (JsonException ex)
+        {
+            Console.WriteLine($"Failed to deserialize win/loss API response: {ex.Message}");
+            return null;
+        }
     }
 
     
     
     
-    private string GetRankImagePath(int rankTier)
+    
+    
+    
+    public string GetRankImagePath(int rankTier)
     {
         var tier = rankTier / 10;
         var stars = rankTier % 10;
@@ -126,15 +144,15 @@ public class DotaDataService(IConfiguration configuration, IHttpClientFactory ht
             var rankName = rankNames.TryGetValue(tier, out var name) ? name : "unranked";
             return $"/DotaRanks/seasonal-rank-{rankName}-{stars}.png";
         }
-
-        return $"/DotaRanks/seasonal-rank-immortal.png";
+        
+        return "/DotaRanks/seasonal-rank-immortal.png";
     }
 
-    private string GetRankName(int rankTier)
+    public string GetRankName(int rankTier)
     {
         var tier = rankTier / 10;
         var stars = rankTier % 10;
-
+    
         string rankName = tier switch
         {
             1 => "Herald",
@@ -147,14 +165,32 @@ public class DotaDataService(IConfiguration configuration, IHttpClientFactory ht
             8 => "Immortal",
             _ => "Unranked"
         };
-
+    
         if (tier != 8)
         {
             return $"{rankName} {stars}";
         }
+    
+        // return $"Immortal Rank {_player.LeaderboardRank.Value}";
+        
+        return $"Immortal Rank";
 
-        return $"Immortal Rank {_player.LeaderboardRank.Value}";
     }
+    
+    
+    
+    
+    private double CalculateWinRate(int wins, int losses)
+    {
+        if (wins + losses == 0)
+        {
+            return 0; 
+        }
+
+        return Math.Round((double)wins / (wins + losses) * 100, 2);
+    }
+
+
     private long IdDifference(long id)
     {
         string userId = id.ToString();
@@ -164,7 +200,7 @@ public class DotaDataService(IConfiguration configuration, IHttpClientFactory ht
             return 0;
         }
 
-        long dota2Id = 0;
+        long dota2Id;
 
        
         if (userId.Length == 9)

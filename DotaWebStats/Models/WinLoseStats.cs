@@ -6,5 +6,5 @@ public class WinLoseStats
 
     public int Lose { get; set; }
 
-    public float WinRate { get; set; }
+    public double WinRate { get; set; }
 }

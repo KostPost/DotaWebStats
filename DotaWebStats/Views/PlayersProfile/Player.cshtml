@@ -1,18 +1,106 @@
-﻿@model DotaWebStats.Models.UserDotaStats
+﻿@model UserDotaStats
+@inject DotaWebStats.Services.IDotaDataService DotaDataService
 
 @{
-    Layout = null; // Change to your layout if needed
+    Layout = "_Layout"; // Use the existing layout
+    ViewData["Title"] = $"Player Profile - {Model.Profile.Personaname}";
+
+    WinLoseStats? winLoseStats = null;
+
+    if (!string.IsNullOrEmpty(Model.Dota2Id))
+    {
+        if (long.TryParse(Model.Dota2Id, out var dota2Id))
+        {
+            winLoseStats = await DotaDataService.GetPlayerWinLoss(dota2Id);
+        }
+        else
+        {
+            <p>Error: Dota2Id is not a valid number.</p>
+        }
+    }
+    else
+    {
+        <p>Error: Dota2Id is null or invalid.</p>
+    }
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <title>Player Stats</title>
-</head>
-<body>
-<div>
-
+<div class="profile-container">
+    <div class="avatar-info-container">
+        <div class="avatar-container">
+            <img src="@Model.Profile.AvatarFull" alt="@Model.Profile.Personaname's avatar" class="img-fluid rounded-circle mb-3" style="width: 100%; max-width: 200px;"/>
+        </div>
+        <div class="info-container">
+            <h1>@Model.Profile.Personaname</h1>
+            @if (winLoseStats != null)
+            {
+                <p>Win Rate: @(winLoseStats.WinRate.ToString("F2"))%</p>
+                <p>Wins: @winLoseStats.Win</p>
+                <p>Losses: @winLoseStats.Lose</p>
+            }
+            else
+            {
+                <p>No Win/Loss statistics available.</p>
+            }
+        </div>
+    </div>
+    <div class="rank-container">
+        @if (Model.RankTier > 0)
+        {
+            <div class="rank-image">
+                <img src="@DotaDataService.GetRankImagePath(Model.RankTier)" alt="Rank Medal" style="width: 170px; height: 170px;"/>
+                <span class="rank-name">@DotaDataService.GetRankName(Model.RankTier)</span>
+            </div>
+        }
+        else
+        {
+            <p>Unranked</p>
+        }
+        @if (Model.LeaderboardRank.HasValue)
+        {
+            <p>Leaderboard Rank: @Model.LeaderboardRank</p>
+        }
+    </div>
 </div>
-</body>
-</html>
+
+<style>
+    .profile-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px; /* Add margin to separate from the fixed header */
+    }
+    .avatar-info-container {
+        display: flex;
+        width: 75%;
+    }
+    .avatar-container {
+        width: 200px;
+        margin-right: 20px;
+    }
+    .info-container {
+        flex-grow: 1;
+        padding-top: 10px;
+    }
+    .rank-container {
+        width: 25%;
+        text-align: right;
+    }
+    .rank-image {
+        position: relative;
+        display: inline-block;
+    }
+    .rank-name {
+        display: none;
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+    }
+    .rank-image:hover .rank-name {
+        display: block;
+    }
+</style>

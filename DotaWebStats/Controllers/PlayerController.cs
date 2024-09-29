@@ -20,7 +20,7 @@ namespace DotaWebStats.Controllers
 
             if (userStats == null)
             {
-                return NotFound(); 
+                return NotFound($"Player with ID {id} not found.");
             }
 
             return View("~/Views/PlayersProfile/Player.cshtml", userStats);

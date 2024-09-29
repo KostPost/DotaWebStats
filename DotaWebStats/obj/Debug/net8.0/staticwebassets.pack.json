@@ -157,6 +157,10 @@
       "PackagePath": "staticwebassets\\DotaRanks\\seasonal-rank-legend-5.png"
     },
     {
+      "Id": "P:\\DotaWebStats\\DotaWebStats\\wwwroot\\css\\Player.css",
+      "PackagePath": "staticwebassets\\css\\Player.css"
+    },
+    {
       "Id": "P:\\DotaWebStats\\DotaWebStats\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

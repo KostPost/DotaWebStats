@@ -15,11 +15,19 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/88ec3bc3f37e76fbcc932a25f9f0c1c29fe2b343/src/Mvc/Mvc.Core/src/ControllerBase.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/88ec3bc3f37e76fbcc932a25f9f0c1c29fe2b343/src/Mvc/Mvc.Razor/src/RazorPageOfT.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/80be5eb0f1bb4fe1a50ba80fe9134f5344918/a9/b0954b40/AnchorTagHelper.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
@@ -40,6 +48,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
+    "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -112,7 +121,8 @@
       <option name="presentableId" value="Default" />
       <updated>1727565463418</updated>
       <workItem from="1727565465515" duration="17000" />
-      <workItem from="1727565491824" duration="6934000" />
+      <workItem from="1727565491824" duration="7348000" />
+      <workItem from="1727641066863" duration="4881000" />
     </task>
     <servers />
   </component>
@@ -137,5 +147,24 @@
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/DotaWebStats/Controllers/PlayerController.cs</url>
+          <line>18</line>
+          <properties documentPath="P:\DotaWebStats\DotaWebStats\Controllers\PlayerController.cs" initialLine="18" containingFunctionPresentation="Method 'Index'">
+            <startOffsets>
+              <option value="522" />
+            </startOffsets>
+            <endOffsets>
+              <option value="582" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
