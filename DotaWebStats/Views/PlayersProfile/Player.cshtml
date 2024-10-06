@@ -6,7 +6,6 @@
 
 @await Html.PartialAsync("_InfoPlayerLayout", Model.UserStats)
 
-
 <div class="stats-container">
     <div class="stats-title">
         <p class="average-maximum"><strong>Averages/Maximums in last 20 displayed matches</strong></p>
@@ -17,12 +16,12 @@
             <div class="stat-label"><strong>WINRATE</strong></div>
         </div>
         <div class="stat-item">
-            <div class="stat-value average-kills"><strong>@Model.RecentMatches.AverageKills.ToString("F0")</strong></div>
+            <div class="stat-value"><strong>@Model.RecentMatches.AverageKills.ToString("F0")</strong></div>
             <div class="stat-max"><strong>@Model.RecentMatches.MaxKills</strong></div>
             <div class="stat-label"><strong>KILLS</strong></div>
         </div>
         <div class="stat-item">
-            <div class="stat-value average-deaths"><strong>@Model.RecentMatches.AverageDeaths.ToString("F0")</strong></div>
+            <div class="stat-value"><strong>@Model.RecentMatches.AverageDeaths.ToString("F0")</strong></div>
             <div class="stat-max"><strong>@Model.RecentMatches.MaxDeaths</strong></div>
             <div class="stat-label"><strong>DEATHS</strong></div>
         </div>
@@ -32,7 +31,7 @@
             <div class="stat-label"><strong>ASSISTS</strong></div>
         </div>
         <div class="stat-item">
-            <div class="stat-value average-gpm"><strong>@Model.RecentMatches.AverageGoldPerMin.ToString("F0")</strong></div>
+            <div class="stat-value"><strong>@Model.RecentMatches.AverageGoldPerMin.ToString("F0")</strong></div>
             <div class="stat-max"><strong>@Model.RecentMatches.MaxGoldPerMin</strong></div>
             <div class="stat-label"><strong>GOLD PER MIN</strong></div>
         </div>
@@ -69,10 +68,4 @@
     </div>
 </div>
 
-
-
-
-<div class="page-data">
-
-
-</div>
+<div class="page-data"></div>

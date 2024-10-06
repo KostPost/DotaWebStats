@@ -2,7 +2,7 @@
 @inject DotaWebStats.Services.IDotaDataService DotaDataService
 
 @{
-    Layout = "_Layout"; 
+    Layout = "_Layout";
     ViewData["Title"] = $"Player Profile - {Model.Profile.Personaname}";
 
     WinLoseStats? winLoseStats = null;
@@ -28,59 +28,56 @@
     <link rel="stylesheet" href="@Url.Content("~/css/_InfoPlayerLayout.css")"/>
 }
 
-<div class="profile-container">
-    <div class="avatar-info-container">
-        <div class="avatar-container">
-            <img src="@Model.Profile.AvatarFull" alt="@Model.Profile.Personaname's avatar" class="img-fluid rounded-circle mb-3" style="width: 100%; max-width: 200px;"/>
+<div class="profile-buttons-container white-box-container">
+    <div class="profile-container">
+        <div class="avatar-info-container">
+            <div class="avatar-container">
+                <img src="@Model.Profile.AvatarFull" alt="@Model.Profile.Personaname's avatar" class="img-fluid rounded-circle mb-3" style="width: 100%; max-width: 200px;"/>
+            </div>
+            <div class="info-container">
+                <h1>@Model.Profile.Personaname</h1>
+                @if (winLoseStats != null)
+                {
+                    <p class="win-rate">Win Rate: @(winLoseStats.WinRate.ToString("F2"))%</p>
+                    <p class="win">Wins: @winLoseStats.Win</p>
+                    <p class="loss">Losses: @winLoseStats.Lose</p>
+                }
+                else
+                {
+                    <p>No Win/Loss statistics available.</p>
+                }
+            </div>
         </div>
-        <div class="info-container">
-        <h1>@Model.Profile.Personaname</h1>
-        @if (winLoseStats != null)
-        {
-            <p class="win-rate">Win Rate: @(winLoseStats.WinRate.ToString("F2"))%</p>
-            <p class="win">Wins: @winLoseStats.Win</p>
-            <p class="loss">Losses: @winLoseStats.Lose</p>
-        }
-
-
+        <div class="rank-container">
+            @if (Model.RankTier > 0)
+            {
+                <div class="rank-image">
+                    <img src="@DotaDataService.GetRankImagePath(Model.RankTier)" alt="Rank Medal" style="width: 170px; height: 170px;"/>
+                    <span class="rank-name">@DotaDataService.GetRankName(Model.RankTier)</span>
+                </div>
+            }
             else
             {
-                <p>No Win/Loss statistics available.</p>
+                <p>Unranked</p>
+            }
+            @if (Model.LeaderboardRank.HasValue)
+            {
+                <p>Leaderboard Rank: @Model.LeaderboardRank</p>
             }
         </div>
     </div>
-    <div class="rank-container">
-        @if (Model.RankTier > 0)
-        {
-            <div class="rank-image">
-                <img src="@DotaDataService.GetRankImagePath(Model.RankTier)" alt="Rank Medal" style="width: 170px; height: 170px;"/>
-                <span class="rank-name">@DotaDataService.GetRankName(Model.RankTier)</span>
-            </div>
-        }
-        else
-        {
-            <p>Unranked</p>
-        }
-        @if (Model.LeaderboardRank.HasValue)
-        {
-            <p>Leaderboard Rank: @Model.LeaderboardRank</p>
-        }
+
+    <div class="button-container">
+        <button class="btn">Overview</button>
+        <button class="btn">Matches</button>
+        <button class="btn">Heroes</button>
+        <button class="btn">Peers</button>
+        <button class="btn">Pros</button>
+        <button class="btn">Totals</button>
+        <button class="btn">Counts</button>
+        <button class="btn">Histograms</button>
+        <button class="btn">Ward Map</button>
+        <button class="btn">Word Cloud</button>
+        <button class="btn">Ratings</button>
     </div>
 </div>
-
-
-<div class="button-container">
-    <button class="btn btn-primary">Overview</button>
-    <button class="btn btn-primary">Matches</button>
-    <button class="btn btn-primary">Heroes</button>
-    <button class="btn btn-primary">Peers</button>
-    <button class="btn btn-primary">Pros</button>
-    <button class="btn btn-primary">Totals</button>
-    <button class="btn btn-primary">Counts</button>
-    <button class="btn btn-primary">Histograms</button>
-    <button class="btn btn-primary">Ward Map</button>
-    <button class="btn btn-primary">Word Cloud</button>
-    <button class="btn btn-primary">Ratings</button>
-    <button class="btn btn-primary">Rankings</button>
-</div>
-

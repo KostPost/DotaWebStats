@@ -341,3 +341,4 @@ public class DotaDataService(IHttpClientFactory httpClientFactory) : IDotaDataSe
 
 }
 
+// make all page a light gray

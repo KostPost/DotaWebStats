@@ -1,31 +1,20 @@
-﻿.button-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 20px 0;
-}
-
-.button-container .btn {
-    margin: 5px;
-    padding: 10px 15px;
+﻿body {
+    background-color: #ff0000; /* Light gray background for the entire page */
 }
 
 .stats-container {
     color: #000000; /* default text color */
     padding: 10px;
     font-family: Arial, sans-serif;
+    background-color: #ffffff; /* Optional: White background for the stats container */
+    border-radius: 10px; /* Optional: Rounded corners for the stats container */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: A subtle shadow effect */
 }
 
 .stats-title {
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
-}
-
-.stats-title h3 {
-    margin: 0;
-    font-size: 14px;
-    color: #000000;
 }
 
 .stats-row {
@@ -51,23 +40,31 @@
 
 .stat-label {
     font-size: 12px;
-    color: rgb(73, 67, 67);
+    color: rgb(0, 0, 0);
     text-transform: uppercase;
     font-weight: bold;
 }
 
-.average-kills {
-    color: green; /* Average kills in green */
-}
+/*.average-kills {*/
+/*    color: green; !* Average kills in green *!*/
+/*}*/
 
-.average-deaths {
-    color: red; /* Average deaths in red */
-}
+/*.average-deaths {*/
+/*    color: red; !* Average deaths in red *!*/
+/*}*/
 
-.average-gpm {
-    color: #ffff00; /* Average gold per minute in yellow */
-}
+/*.average-gpm {*/
+/*    color: #000000; !* Average gold per minute in yellow *!*/
+/*}*/
 
 .average-maximum {
     font-weight: bold;
+}
+
+.page-data {
+    background-color: #ffffff; /* White background for page data */
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: A subtle shadow effect */
 }
