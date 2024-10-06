@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Qr3DL6SBmxEjSR5FwDJMJK20AzUtwB14DTvmI2kpY70=",
+  "Hash": "3eeAC+l0a+f2FdbU7HO0yMgazlyV+D6rXCyg22tF6tk=",
   "Source": "DotaWebStats",
   "BasePath": "_content/DotaWebStats",
   "Mode": "Default",
@@ -55,12 +55,12 @@
       "OriginalItemSpec": "P:\\DotaWebStats\\DotaWebStats\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\DotaWebStats.bundle.scp.css"
     },
     {
-      "Identity": "P:\\DotaWebStats\\DotaWebStats\\wwwroot\\css\\Player.css",
+      "Identity": "P:\\DotaWebStats\\DotaWebStats\\wwwroot\\css\\_InfoPlayerLayout.css",
       "SourceId": "DotaWebStats",
       "SourceType": "Discovered",
       "ContentRoot": "P:\\DotaWebStats\\DotaWebStats\\wwwroot\\",
       "BasePath": "_content/DotaWebStats",
-      "RelativePath": "css/Player.css",
+      "RelativePath": "css/_InfoPlayerLayout.css",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -71,7 +71,26 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\Player.css"
+      "OriginalItemSpec": "wwwroot\\css\\_InfoPlayerLayout.css"
+    },
+    {
+      "Identity": "P:\\DotaWebStats\\DotaWebStats\\wwwroot\\css\\PlayerOverview.css",
+      "SourceId": "DotaWebStats",
+      "SourceType": "Discovered",
+      "ContentRoot": "P:\\DotaWebStats\\DotaWebStats\\wwwroot\\",
+      "BasePath": "_content/DotaWebStats",
+      "RelativePath": "css/PlayerOverview.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\PlayerOverview.css"
     },
     {
       "Identity": "P:\\DotaWebStats\\DotaWebStats\\wwwroot\\css\\site.css",

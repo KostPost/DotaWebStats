@@ -1,106 +1,82 @@
-﻿@model UserDotaStats
-@inject DotaWebStats.Services.IDotaDataService DotaDataService
+﻿@model PlayerViewModel
 
-@{
-    Layout = "_Layout"; // Use the existing layout
-    ViewData["Title"] = $"Player Profile - {Model.Profile.Personaname}";
-
-    WinLoseStats? winLoseStats = null;
-
-    if (!string.IsNullOrEmpty(Model.Dota2Id))
-    {
-        if (long.TryParse(Model.Dota2Id, out var dota2Id))
-        {
-            winLoseStats = await DotaDataService.GetPlayerWinLoss(dota2Id);
-        }
-        else
-        {
-            <p>Error: Dota2Id is not a valid number.</p>
-        }
-    }
-    else
-    {
-        <p>Error: Dota2Id is null or invalid.</p>
-    }
+@section Styles {
+    <link rel="stylesheet" href="@Url.Content("~/css/PlayerOverview.css")"/>
 }
 
-<div class="profile-container">
-    <div class="avatar-info-container">
-        <div class="avatar-container">
-            <img src="@Model.Profile.AvatarFull" alt="@Model.Profile.Personaname's avatar" class="img-fluid rounded-circle mb-3" style="width: 100%; max-width: 200px;"/>
-        </div>
-        <div class="info-container">
-            <h1>@Model.Profile.Personaname</h1>
-            @if (winLoseStats != null)
-            {
-                <p>Win Rate: @(winLoseStats.WinRate.ToString("F2"))%</p>
-                <p>Wins: @winLoseStats.Win</p>
-                <p>Losses: @winLoseStats.Lose</p>
-            }
-            else
-            {
-                <p>No Win/Loss statistics available.</p>
-            }
-        </div>
-    </div>
-    <div class="rank-container">
-        @if (Model.RankTier > 0)
-        {
-            <div class="rank-image">
-                <img src="@DotaDataService.GetRankImagePath(Model.RankTier)" alt="Rank Medal" style="width: 170px; height: 170px;"/>
-                <span class="rank-name">@DotaDataService.GetRankName(Model.RankTier)</span>
-            </div>
-        }
-        else
-        {
-            <p>Unranked</p>
-        }
-        @if (Model.LeaderboardRank.HasValue)
-        {
-            <p>Leaderboard Rank: @Model.LeaderboardRank</p>
-        }
-    </div>
-</div>
+@await Html.PartialAsync("_InfoPlayerLayout", Model.UserStats)
 
-<style>
-    .profile-container {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px; /* Add margin to separate from the fixed header */
-    }
-    .avatar-info-container {
-        display: flex;
-        width: 75%;
-    }
-    .avatar-container {
-        width: 200px;
-        margin-right: 20px;
-    }
-    .info-container {
-        flex-grow: 1;
-        padding-top: 10px;
-    }
-    .rank-container {
-        width: 25%;
-        text-align: right;
-    }
-    .rank-image {
-        position: relative;
-        display: inline-block;
-    }
-    .rank-name {
-        display: none;
-        position: absolute;
-        background-color: rgba(0, 0, 0, 0.8);
-        color: white;
-        padding: 5px 10px;
-        border-radius: 5px;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        white-space: nowrap;
-    }
-    .rank-image:hover .rank-name {
-        display: block;
-    }
-</style>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Statistic</th>
+            <th>Average</th>
+            <th>Maximum</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Winrate</td>
+            <td>@(Model.RecentMatches.WinRate.ToString("P0"))</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>Kills</td>
+            <td>@Model.RecentMatches.AverageKills.ToString("F1")</td>
+            <td>@Model.RecentMatches.MaxKills</td>
+        </tr>
+        <tr>
+            <td>Deaths</td>
+            <td>@Model.RecentMatches.AverageDeaths.ToString("F1")</td>
+            <td>@Model.RecentMatches.MaxDeaths</td>
+        </tr>
+        <tr>
+            <td>Assists</td>
+            <td>@Model.RecentMatches.AverageAssists.ToString("F1")</td>
+            <td>@Model.RecentMatches.MaxAssists</td>
+        </tr>
+        <tr>
+            <td>Gold Per Min</td>
+            <td>@Model.RecentMatches.AverageGoldPerMin.ToString("F0")</td>
+            <td>@Model.RecentMatches.MaxGoldPerMin</td>
+        </tr>
+        <tr>
+            <td>XP Per Min</td>
+            <td>@Model.RecentMatches.AverageXpPerMin.ToString("F0")</td>
+            <td>@(Model.RecentMatches.MaxXpPerMin >= 1000 ? $"{Model.RecentMatches.MaxXpPerMin / 1000:F1}k" : Model.RecentMatches.MaxXpPerMin.ToString())</td>
+        </tr>
+        <tr>
+            <td>Last Hits</td>
+            <td>@Model.RecentMatches.AverageLastHits.ToString("F0")</td>
+            <td>@Model.RecentMatches.MaxLastHits</td>
+        </tr>
+        <tr>
+            <td>Hero Damage</td>
+            <td>@($"{Model.RecentMatches.AverageHeroDamage / 1000:F1}k")</td>
+            <td>@($"{Model.RecentMatches.MaxHeroDamage / 1000:F1}k")</td>
+        </tr>
+        <tr>
+            <td>Hero Healing</td>
+            <td>@($"{Model.RecentMatches.AverageHeroHealing / 1000:F1}k")</td>
+            <td>@($"{Model.RecentMatches.MaxHeroHealing / 1000:F1}k")</td>
+        </tr>
+        <tr>
+            <td>Tower Damage</td>
+            <td>@($"{Model.RecentMatches.AverageTowerDamage / 1000:F1}k")</td>
+            <td>@($"{Model.RecentMatches.MaxTowerDamage / 1000:F1}k")</td>
+        </tr>
+        <tr>
+            <td>Duration</td>
+            <td>@TimeSpan.FromSeconds(Model.RecentMatches.AverageDuration).ToString(@"mm\:ss")</td>
+            <td>@TimeSpan.FromSeconds(Model.RecentMatches.MaxDuration).ToString(@"mm\:ss")</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<div class="page-data">
+    
+    
+</div>

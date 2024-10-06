@@ -1,0 +1,52 @@
+﻿.profile-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px; /* Add margin to separate from the fixed header */
+}
+.avatar-info-container {
+    display: flex;
+    width: 75%;
+}
+.avatar-container {
+    width: 200px;
+    margin-right: 20px;
+}
+.info-container {
+    flex-grow: 1;
+    padding-top: 10px;
+}
+.rank-container {
+    width: 25%;
+    text-align: right;
+}
+.rank-image {
+    position: relative;
+    display: inline-block;
+}
+.rank-name {
+    display: none;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+.rank-image:hover .rank-name {
+    display: block;
+}
+
+.win {
+    color: green;
+    font-weight: bold;
+}
+.loss {
+    color: red;
+    font-weight: bold;
+}
+.win-rate{
+    font-weight: bold;
+}

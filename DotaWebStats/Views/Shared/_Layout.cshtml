@@ -8,21 +8,23 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - Dota Web Stats</title>
+    
+    @RenderSection("Styles", required: false)
+    
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <style>
-        /* Make header fixed at the top */
+
         header {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            z-index: 1000; /* Ensure it's on top of other content */
+            z-index: 1000; 
         }
 
-        /* Add padding to the top of the body to prevent overlap with the fixed header */
         body {
-            padding-top: 60px; /* Adjust this value based on your header's height */
+            padding-top: 60px; 
         }
     </style>
 </head>
@@ -40,14 +42,12 @@
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                    <!-- Add your navigation items here -->
                 </ul>
                 <ul class="navbar-nav">
                     @if (SteamAuthService.UserData != null)
                     {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="@SteamAuthService.UserData.Profile.AvatarFull" alt="User Avatar" class="rounded-circle" style="width: 70px; height: 70px;"/>
                                 @SteamAuthService.UserData.Profile.Personaname
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">

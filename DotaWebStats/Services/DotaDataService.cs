@@ -11,6 +11,8 @@ public interface IDotaDataService
 
     Task<WinLoseStats?> GetPlayerWinLoss(long id);
 
+    Task<RecentMatchesSummary> GetRecentMatches(long accountId);
+
     string GetRankName(int rankTier);
     
     string GetRankImagePath(int rankTier);
@@ -115,9 +117,53 @@ public class DotaDataService(IHttpClientFactory httpClientFactory) : IDotaDataSe
             return null;
         }
     }
+    public async Task<RecentMatchesSummary> GetRecentMatches(long accountId)
+    {
+        if (IdDifference(accountId) == 0)
+        {
+            return null;
+        }
 
+        var response = await _httpClient.GetAsync($"https://api.opendota.com/api/players/{accountId}/recentMatches");
     
-    
+        if (!response.IsSuccessStatusCode)
+        {
+            Console.WriteLine($"API request failed with status code: {response.StatusCode}");
+            return null;
+        }
+
+        var content = await response.Content.ReadAsStringAsync();
+        if (string.IsNullOrEmpty(content))
+        {
+            Console.WriteLine("API response content is empty.");
+            return null;
+        }
+
+        try
+        {
+            var recentMatches = JsonSerializer.Deserialize<List<RecentMatches>>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
+
+
+
+            return GetRecentAverageMaximum(recentMatches);
+
+
+
+
+
+        }
+        catch (JsonException ex)
+        {
+            Console.WriteLine($"Failed to deserialize recent matches API response: {ex.Message}");
+            return null;
+        }
+    }
+
+  
     
     
     
@@ -147,7 +193,6 @@ public class DotaDataService(IHttpClientFactory httpClientFactory) : IDotaDataSe
         
         return "/DotaRanks/seasonal-rank-immortal.png";
     }
-
     public string GetRankName(int rankTier)
     {
         var tier = rankTier / 10;
@@ -176,8 +221,66 @@ public class DotaDataService(IHttpClientFactory httpClientFactory) : IDotaDataSe
         return $"Immortal Rank";
 
     }
-    
-    
+
+    private RecentMatchesSummary GetRecentAverageMaximum(List<RecentMatches> recentMatches)
+    {
+        if (recentMatches == null || recentMatches.Count == 0)
+        {
+            return new RecentMatchesSummary();
+        }
+
+        var recentMatchesSummary = new RecentMatchesSummary
+        {
+            MaxKills = recentMatches.Max(m => m.Kills),
+            MaxDeaths = recentMatches.Max(m => m.Deaths),
+            MaxAssists = recentMatches.Max(m => m.Assists),
+            MaxGoldPerMin = recentMatches.Max(m => m.GoldPerMin),
+            MaxXpPerMin = recentMatches.Max(m => m.XpPerMin),
+            MaxLastHits = recentMatches.Max(m => m.LastHits),
+            MaxHeroDamage = recentMatches.Max(m => m.HeroDamage),
+            MaxHeroHealing = recentMatches.Max(m => m.HeroHealing),
+            MaxTowerDamage = recentMatches.Max(m => m.TowerDamage),
+            MaxDuration = recentMatches.Max(m => m.Duration),
+            
+            
+            
+            AverageKills = recentMatches.Average(m => m.Kills),
+            AverageDeaths = recentMatches.Average(m => m.Deaths),
+            AverageAssists = recentMatches.Average(m => m.Assists),
+            AverageGoldPerMin = recentMatches.Average(m => m.GoldPerMin),
+            AverageXpPerMin = recentMatches.Average(m => m.XpPerMin),
+            AverageLastHits = recentMatches.Average(m => m.LastHits),
+            AverageHeroDamage = recentMatches.Average(m => m.HeroDamage),
+            AverageHeroHealing = recentMatches.Average(m => m.HeroHealing),
+            AverageTowerDamage = recentMatches.Average(m => m.TowerDamage),
+            AverageDuration = recentMatches.Average(m => m.Duration)
+        };
+
+        int wins = 0, losses = 0;
+        foreach (var match in recentMatches)
+        {
+            if (match.PlayerSlot < 128 && match.RadiantWin == true)
+            {
+                losses++;
+            }
+            else if((match.PlayerSlot >= 128 && match.RadiantWin == false))
+            {
+                wins++;
+            }
+            else
+            {
+                wins++;
+            }
+            
+            
+        }
+        
+        Console.WriteLine($"\n\nLose {losses} + \t Wins {wins}\n\n");
+
+        recentMatchesSummary.WinRate = CalculateWinRate(wins, losses);
+
+        return recentMatchesSummary;
+    }
     
     
     private double CalculateWinRate(int wins, int losses)
@@ -189,8 +292,6 @@ public class DotaDataService(IHttpClientFactory httpClientFactory) : IDotaDataSe
 
         return Math.Round((double)wins / (wins + losses) * 100, 2);
     }
-
-
     private long IdDifference(long id)
     {
         string userId = id.ToString();
@@ -238,5 +339,4 @@ public class DotaDataService(IHttpClientFactory httpClientFactory) : IDotaDataSe
 
 
 
-    
 }
