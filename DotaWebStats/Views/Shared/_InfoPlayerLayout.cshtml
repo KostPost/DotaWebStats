@@ -1,5 +1,8 @@
-﻿@model UserDotaStats
-@inject DotaWebStats.Services.IDotaDataService DotaDataService
+﻿@using DotaWebStats.Services
+@using DotaWebStats.Constants
+@model UserDotaStats
+@inject IDotaDataService DotaDataService
+@inject DotaDataHelper DotaDataHelper
 
 @{
     Layout = "_Layout";
@@ -52,8 +55,8 @@
             @if (Model.RankTier > 0)
             {
                 <div class="rank-image">
-                    <img src="@DotaDataService.GetRankImagePath(Model.RankTier)" alt="Rank Medal" style="width: 170px; height: 170px;"/>
-                    <span class="rank-name">@DotaDataService.GetRankName(Model.RankTier)</span>
+                    <img src="@DotaDataHelper.GetRankImagePath(Model.RankTier)" alt="Rank Medal" style="width: 170px; height: 170px;"/>
+                    <span class="rank-name">@DotaDataHelper.GetRankName(Model.RankTier)</span>
                 </div>
             }
             else
@@ -68,7 +71,11 @@
     </div>
 
     <div class="button-container">
-        <button class="btn">Overview</button>
+
+        <a href=@UrlConstants.PlayerOverviewPage(Model.Dota2Id) class="btn">
+            Overview
+        </a>
+
         <button class="btn">Matches</button>
         <button class="btn">Heroes</button>
         <button class="btn">Peers</button>

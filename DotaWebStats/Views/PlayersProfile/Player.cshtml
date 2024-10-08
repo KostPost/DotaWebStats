@@ -1,4 +1,5 @@
-﻿@model PlayerViewModel
+﻿@using DotaWebStats.Services
+@model PlayerViewModel
 
 @section Styles {
     <link rel="stylesheet" href="@Url.Content("~/css/PlayerOverview.css")"/>
@@ -8,64 +9,224 @@
 
 <div class="stats-container">
     <div class="stats-title">
-        <p class="average-maximum"><strong>Averages/Maximums in last 20 displayed matches</strong></p>
+        <p class="average-maximum">
+            <strong>Averages/Maximums in last 20 displayed matches</strong>
+        </p>
     </div>
+
+    <div class="winrate-container">
+        <strong>WINRATE: @(Model.RecentMatchesSummary.WinRate.ToString("F2"))</strong>
+    </div>
+
+
     <div class="stats-row">
-        <div class="stat-item">
-            <div class="stat-value"><strong> @(Model.RecentMatches.WinRate.ToString("F2"))</strong></div>
-            <div class="stat-label"><strong>WINRATE</strong></div>
+
+        <div class="stat-item-container">
+            <div class="stat-item">
+                <div class="stat-value">
+                    <strong>@Model.RecentMatchesSummary.AverageKills.ToString("F0")</strong>
+                </div>
+                <div class="stat-max">
+                    <strong>@Model.RecentMatchesSummary.MaxKills</strong>
+                </div>
+            </div>
+            <div class="stat-label">
+                <strong>KILLS</strong>
+            </div>
         </div>
-        <div class="stat-item">
-            <div class="stat-value"><strong>@Model.RecentMatches.AverageKills.ToString("F0")</strong></div>
-            <div class="stat-max"><strong>@Model.RecentMatches.MaxKills</strong></div>
-            <div class="stat-label"><strong>KILLS</strong></div>
+
+        <div class="stat-item-container">
+            <div class="stat-item">
+                <div class="stat-value">
+                    <strong>@Model.RecentMatchesSummary.AverageDeaths.ToString("F0")</strong>
+                </div>
+                <div class="stat-max">
+                    <strong>@Model.RecentMatchesSummary.MaxDeaths</strong>
+                </div>
+            </div>
+            <div class="stat-label">
+                <strong>DEATHS</strong>
+            </div>
         </div>
-        <div class="stat-item">
-            <div class="stat-value"><strong>@Model.RecentMatches.AverageDeaths.ToString("F0")</strong></div>
-            <div class="stat-max"><strong>@Model.RecentMatches.MaxDeaths</strong></div>
-            <div class="stat-label"><strong>DEATHS</strong></div>
+
+        <div class="stat-item-container">
+            <div class="stat-item">
+                <div class="stat-value">
+                    <strong>@Model.RecentMatchesSummary.AverageAssists.ToString("F0")</strong>
+                </div>
+                <div class="stat-max">
+                    <strong>@Model.RecentMatchesSummary.MaxAssists</strong>
+                </div>
+            </div>
+            <div class="stat-label">
+                <strong>ASSISTS</strong>
+            </div>
         </div>
-        <div class="stat-item">
-            <div class="stat-value"><strong>@Model.RecentMatches.AverageAssists.ToString("F0")</strong></div>
-            <div class="stat-max"><strong>@Model.RecentMatches.MaxAssists</strong></div>
-            <div class="stat-label"><strong>ASSISTS</strong></div>
+
+        <div class="stat-item-container">
+            <div class="stat-item">
+                <div class="stat-value">
+                    <strong>@Model.RecentMatchesSummary.AverageGoldPerMin.ToString("F0")</strong>
+                </div>
+                <div class="stat-max">
+                    <strong>@Model.RecentMatchesSummary.MaxGoldPerMin</strong>
+                </div>
+            </div>
+            <div class="stat-label">
+                <strong>GOLD PER MIN</strong>
+            </div>
         </div>
-        <div class="stat-item">
-            <div class="stat-value"><strong>@Model.RecentMatches.AverageGoldPerMin.ToString("F0")</strong></div>
-            <div class="stat-max"><strong>@Model.RecentMatches.MaxGoldPerMin</strong></div>
-            <div class="stat-label"><strong>GOLD PER MIN</strong></div>
+
+        <div class="stat-item-container">
+            <div class="stat-item">
+                <div class="stat-value">
+                    <strong>@Model.RecentMatchesSummary.AverageXpPerMin.ToString("F0")</strong>
+                </div>
+                <div class="stat-max">
+                    <strong>@(Model.RecentMatchesSummary.MaxXpPerMin >= 1000 ? $"{Model.RecentMatchesSummary.MaxXpPerMin / 1000:F1}K" : Model.RecentMatchesSummary.MaxXpPerMin.ToString())</strong>
+                </div>
+            </div>
+            <div class="stat-label">
+                <strong>XP PER MIN</strong>
+            </div>
         </div>
-        <div class="stat-item">
-            <div class="stat-value"><strong>@Model.RecentMatches.AverageXpPerMin.ToString("F0")</strong></div>
-            <div class="stat-max"><strong>@(Model.RecentMatches.MaxXpPerMin >= 1000 ? $"{Model.RecentMatches.MaxXpPerMin / 1000:F1}K" : Model.RecentMatches.MaxXpPerMin.ToString())</strong></div>
-            <div class="stat-label"><strong>XP PER MIN</strong></div>
+
+        <div class="stat-item-container">
+            <div class="stat-item">
+                <div class="stat-value">
+                    <strong>@Model.RecentMatchesSummary.AverageLastHits.ToString("F0")</strong>
+                </div>
+                <div class="stat-max">
+                    <strong>@Model.RecentMatchesSummary.MaxLastHits</strong>
+                </div>
+            </div>
+            <div class="stat-label">
+                <strong>LAST HITS</strong>
+            </div>
         </div>
-        <div class="stat-item">
-            <div class="stat-value"><strong>@Model.RecentMatches.AverageLastHits.ToString("F0")</strong></div>
-            <div class="stat-max"><strong>@Model.RecentMatches.MaxLastHits</strong></div>
-            <div class="stat-label"><strong>LAST HITS</strong></div>
+
+        <div class="stat-item-container">
+            <div class="stat-item">
+                <div class="stat-value">
+                    <strong>@($"{Model.RecentMatchesSummary.AverageHeroDamage / 1000:F1}K")</strong>
+                </div>
+                <div class="stat-max">
+                    <strong>@($"{Model.RecentMatchesSummary.MaxHeroDamage / 1000:F1}K")</strong>
+                </div>
+            </div>
+            <div class="stat-label">
+                <strong>HERO DAMAGE</strong>
+            </div>
         </div>
-        <div class="stat-item">
-            <div class="stat-value"><strong>@($"{Model.RecentMatches.AverageHeroDamage / 1000:F1}K")</strong></div>
-            <div class="stat-max"><strong>@($"{Model.RecentMatches.MaxHeroDamage / 1000:F1}K")</strong></div>
-            <div class="stat-label"><strong>HERO DAMAGE</strong></div>
+
+        <div class="stat-item-container">
+            <div class="stat-item">
+                <div class="stat-value">
+                    <strong>@($"{Model.RecentMatchesSummary.AverageHeroHealing / 1000:F1}K")</strong>
+                </div>
+                <div class="stat-max">
+                    <strong>@($"{Model.RecentMatchesSummary.MaxHeroHealing / 1000:F1}K")</strong>
+                </div>
+            </div>
+            <div class="stat-label">
+                <strong>HERO HEALING</strong>
+            </div>
         </div>
-        <div class="stat-item">
-            <div class="stat-value"><strong>@($"{Model.RecentMatches.AverageHeroHealing / 1000:F1}K")</strong></div>
-            <div class="stat-max"><strong>@($"{Model.RecentMatches.MaxHeroHealing / 1000:F1}K")</strong></div>
-            <div class="stat-label"><strong>HERO HEALING</strong></div>
+
+        <div class="stat-item-container">
+            <div class="stat-item">
+                <div class="stat-value">
+                    <strong>@($"{Model.RecentMatchesSummary.AverageTowerDamage / 1000:F1}K")</strong>
+                </div>
+                <div class="stat-max">
+                    <strong>@($"{Model.RecentMatchesSummary.MaxTowerDamage / 1000:F1}K")</strong>
+                </div>
+            </div>
+            <div class="stat-label">
+                <strong>TOWER DAMAGE</strong>
+            </div>
         </div>
-        <div class="stat-item">
-            <div class="stat-value"><strong>@($"{Model.RecentMatches.AverageTowerDamage / 1000:F1}K")</strong></div>
-            <div class="stat-max"><strong>@($"{Model.RecentMatches.MaxTowerDamage / 1000:F1}K")</strong></div>
-            <div class="stat-label"><strong>TOWER DAMAGE</strong></div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value"><strong>@TimeSpan.FromSeconds(Model.RecentMatches.AverageDuration).ToString(@"mm\:ss")</strong></div>
-            <div class="stat-max"><strong>@TimeSpan.FromSeconds(Model.RecentMatches.MaxDuration).ToString(@"mm\:ss")</strong></div>
-            <div class="stat-label"><strong>DURATION</strong></div>
+
+        <div class="stat-item-container">
+            <div class="stat-item">
+                <div class="stat-value">
+                    <strong>@TimeSpan.FromSeconds(Model.RecentMatchesSummary.AverageDuration).ToString(@"mm\:ss")</strong>
+                </div>
+                <div class="stat-max">
+                    <strong>@TimeSpan.FromSeconds(Model.RecentMatchesSummary.MaxDuration).ToString(@"mm\:ss")</strong>
+                </div>
+            </div>
+            <div class="stat-label">
+                <strong>DURATION</strong>
+            </div>
         </div>
     </div>
+</div>
+
+
+<div class="table-container">
+    <table class="match-table">
+        <thead>
+        <tr>
+            <th>Hero</th>
+            <th>Result</th>
+            <th>Game Mode</th>
+            <th>Duration</th>
+            <th style="text-align: center;">K</th>
+            <th style="text-align: center;">D</th>
+            <th style="text-align: center;">A</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        @if (Model.RecentMatches != null && Model.RecentMatches.Any())
+        {
+            foreach (var match in Model.RecentMatches)
+            {
+                var formattedHeroName = match.HeroName;
+                var heroImageUrl = $"https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/{formattedHeroName}.png"; // Replace with proper hero name if necessary
+        
+                <tr>
+                    <td>
+                        <img src="@heroImageUrl" alt="Hero Image" class="hero-image"/>
+                        <div><strong>@match.LocalizedName</strong></div>
+                    </td>
+                    <td>
+                        <div style="color: @(match.IsPlayerWin ? "green" : "red"); font-weight: bold;">
+                            <strong>@(match.IsPlayerWin ? "Win" : "Loss")</strong>
+                        </div>
+                        <div><strong>Game Mode: @match.GameMode</strong></div>
+                    </td>
+        
+                    <td>
+                        <div><strong>Game Mode: @match.GameModeName</strong></div>
+                        <div><strong>@match.AverageRankName</strong></div>
+                    </td>
+                    <td>
+                        <div><strong>Duration: @TimeSpan.FromSeconds(match.Duration).ToString(@"mm\:ss")</strong></div>
+                        <div><strong>@(match.PlayerSlot < 5 ? "Radiant" : "Dire")</strong></div>
+                    </td>
+                    <td>
+                        <div class="kill"><strong>@match.Kills</strong></div>
+                    </td>
+                    <td>
+                        <div class="death"><strong>@match.Deaths</strong></div>
+                    </td>
+                    <td>
+                        <div class="assists"><strong>@match.Assists</strong></div>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="7" style="text-align: center;"><strong>No data</strong></td>
+            </tr>
+        }
+
+        </tbody>
+    </table>
 </div>
 
 <div class="page-data"></div>

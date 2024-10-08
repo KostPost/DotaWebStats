@@ -1,70 +1,158 @@
-﻿body {
-    background-color: #ff0000; /* Light gray background for the entire page */
-}
-
-.stats-container {
-    color: #000000; /* default text color */
-    padding: 10px;
+﻿.stats-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: #000000;
+    padding: 15px;
     font-family: Arial, sans-serif;
-    background-color: #ffffff; /* Optional: White background for the stats container */
-    border-radius: 10px; /* Optional: Rounded corners for the stats container */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: A subtle shadow effect */
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }
 
 .stats-title {
-    display: flex;
-    justify-content: space-between;
     margin-bottom: 5px;
+    text-align: center;
 }
+
+/* Winrate specific styling */
+.winrate-container {
+    text-align: center; /* Center align the text */
+    margin: 15px 0; /* Add margin above and below */
+    font-size: 18px; /* Adjust font size */
+    font-weight: bold; /* Make it bold */
+}
+
 
 .stats-row {
     display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
     justify-content: space-between;
 }
 
+.stat-item-container {
+    flex: 1 1 calc(20% - 8px); /* 5 items per row */
+    min-width: 140px;
+    max-width: calc(20% - 8px);
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
 .stat-item {
-    text-align: center;
-    flex: 1;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    padding: 6px 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 32px;
 }
 
 .stat-value {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
+    flex: 1;
+    text-align: left;
 }
 
 .stat-max {
-    font-size: 14px;
-    color: #000000;
+    font-size: 12px;
+    color: #666;
     font-weight: bold;
+    margin-left: 6px;
+    text-align: right;
 }
 
 .stat-label {
-    font-size: 12px;
+    font-size: 11px;
     color: rgb(0, 0, 0);
     text-transform: uppercase;
     font-weight: bold;
+    text-align: center;
+    margin-top: 6px;
 }
 
-/*.average-kills {*/
-/*    color: green; !* Average kills in green *!*/
-/*}*/
+/* Media Queries */
+@media (max-width: 1200px) {
+    .stats-container {
+        max-width: 1000px;
+    }
 
-/*.average-deaths {*/
-/*    color: red; !* Average deaths in red *!*/
-/*}*/
-
-/*.average-gpm {*/
-/*    color: #000000; !* Average gold per minute in yellow *!*/
-/*}*/
-
-.average-maximum {
-    font-weight: bold;
+    .stat-item-container {
+        flex: 1 1 calc(20% - 8px);
+        min-width: 120px;
+    }
 }
 
-.page-data {
-    background-color: #ffffff; /* White background for page data */
-    padding: 20px;
+@media (max-width: 900px) {
+    .stat-item-container {
+        flex: 1 1 calc(33.333% - 8px);
+        max-width: calc(33.333% - 8px);
+    }
+}
+
+@media (max-width: 600px) {
+    .stat-item-container {
+        flex: 1 1 calc(50% - 5px);
+        max-width: calc(50% - 5px);
+    }
+
+    .stat-value {
+        font-size: 14px;
+    }
+
+    .stat-max {
+        font-size: 11px;
+    }
+}
+
+
+
+.kill {
+    color: green;
+    text-align: center;
+    /*font-weight: bold*/
+}
+
+.death {
+    color: red;
+    text-align: center;
+    /*font-weight: bold*/
+}
+.assists{
+    text-align: center;
+    /*font-weight: bold*/
+}
+
+
+.table-container {
     margin-top: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: A subtle shadow effect */
+    overflow-x: auto; /* Enable horizontal scrolling for small screens */
+}
+
+.match-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.match-table th, .match-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.match-table th {
+    background-color: #f2f2f2;
+}
+
+.hero-image {
+    width: 70px; /* Set a fixed size for hero images */
+    height: auto;
 }

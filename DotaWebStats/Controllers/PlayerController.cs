@@ -1,6 +1,6 @@
 ﻿using DotaWebStats.Models;
 using Microsoft.AspNetCore.Mvc;
-using DotaWebStats.Services; // Include your services namespace
+using DotaWebStats.Services;
 
 namespace DotaWebStats.Controllers
 {
@@ -18,17 +18,25 @@ namespace DotaWebStats.Controllers
                 return NotFound($"Player with ID {id} not found.");
             }
 
-            var recentMatches = await _dotaDataService.GetRecentMatches(id);
+            var recentMatchesSummary = await _dotaDataService.RecentMatchesSummary(id);
     
-            if (recentMatches == null)
+            if (recentMatchesSummary == null)
             {
                 return NotFound($"Recent matches for player with ID {id} not found.");
             }
 
+            var recentMatches = await _dotaDataService.GetRecentMatches(id);
+            if (recentMatches == null)
+            {
+                return NotFound($"Recent matches for player with ID {id} not found.");
+            }
+            
+
             var viewModel = new PlayerViewModel
             {
                 UserStats = userStats,
-                RecentMatches = recentMatches // Adjust according to the actual type returned
+                RecentMatchesSummary = recentMatchesSummary,
+                RecentMatches = recentMatches
             };
 
             return View("~/Views/PlayersProfile/Player.cshtml", viewModel);
@@ -36,8 +44,6 @@ namespace DotaWebStats.Controllers
 
 
 
-        
-        
         
         
         [HttpGet("player/{id}/overview")]
@@ -50,20 +56,35 @@ namespace DotaWebStats.Controllers
                 return NotFound($"Player with ID {id} not found.");
             }
 
-            var recentMatches = await _dotaDataService.GetRecentMatches(id);
+            var recentMatchesSummary = await _dotaDataService.RecentMatchesSummary(id);
     
-            if (recentMatches == null)
+            if (recentMatchesSummary == null)
             {
                 return NotFound($"Recent matches for player with ID {id} not found.");
             }
 
+            var recentMatches = await _dotaDataService.GetRecentMatches(id);
+            if (recentMatches == null)
+            {
+                return NotFound($"Recent matches for player with ID {id} not found.");
+            }
+            
+
             var viewModel = new PlayerViewModel
             {
                 UserStats = userStats,
-                RecentMatches = recentMatches 
+                RecentMatchesSummary = recentMatchesSummary,
+                RecentMatches = recentMatches
             };
 
             return View("~/Views/PlayersProfile/Player.cshtml", viewModel);
         }
-    }
+
+
+    //     [HttpGet("player/{id}/matches")]
+    //     public async Task<IActionResult> Matches(long id)
+    //     {
+    //         
+    //     }
+    // }
 }
