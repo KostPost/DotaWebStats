@@ -1,8 +1,11 @@
-﻿@using DotaWebStats.Services
+﻿@using DotaWebStats.Constants
 @model PlayerViewModel
 
-@section Styles {
+@section Styles {'
     <link rel="stylesheet" href="@Url.Content("~/css/PlayerOverview.css")"/>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
 }
 
 @await Html.PartialAsync("_InfoPlayerLayout", Model.UserStats)
@@ -185,35 +188,62 @@
             {
                 var formattedHeroName = match.HeroName;
                 var heroImageUrl = $"https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/{formattedHeroName}.png"; // Replace with proper hero name if necessary
-        
+
                 <tr>
-                    <td>
+
+
+                <td>
+                    <div class="hero-info">
                         <img src="@heroImageUrl" alt="Hero Image" class="hero-image"/>
-                        <div><strong>@match.LocalizedName</strong></div>
-                    </td>
+                        <a href="@UrlConstants.MatchOverviewPage(match.MatchId.ToString())" style="text-decoration: none; color: inherit;">
+                            <strong>@match.LocalizedName</strong>
+                        </a>
+                    </div>
+                </td>
+
+
                     <td>
-                        <div style="color: @(match.IsPlayerWin ? "green" : "red"); font-weight: bold;">
-                            <strong>@(match.IsPlayerWin ? "Win" : "Loss")</strong>
+                        <a style="text-decoration: none; color: inherit;">
+                            <div style="color: @(match.IsPlayerWin ? "green" : "red"); font-weight: bold;">
+                                <strong>@(match.IsPlayerWin ? "Win" : "Loss")</strong>
+                            </div>
+                        </a>
+                        <div>
+                            <strong>Game Mode: @match.GameMode</strong>
                         </div>
-                        <div><strong>Game Mode: @match.GameMode</strong></div>
                     </td>
-        
+
+
                     <td>
-                        <div><strong>Game Mode: @match.GameModeName</strong></div>
-                        <div><strong>@match.AverageRankName</strong></div>
-                    </td>
-                    <td>
-                        <div><strong>Duration: @TimeSpan.FromSeconds(match.Duration).ToString(@"mm\:ss")</strong></div>
-                        <div><strong>@(match.PlayerSlot < 5 ? "Radiant" : "Dire")</strong></div>
-                    </td>
-                    <td>
-                        <div class="kill"><strong>@match.Kills</strong></div>
+                        <div>
+                            <strong>Game Mode: @match.GameModeName</strong>
+                        </div>
+                        <div>
+                            <strong>@match.AverageRankName</strong>
+                        </div>
                     </td>
                     <td>
-                        <div class="death"><strong>@match.Deaths</strong></div>
+                        <div>
+                            <strong>Duration: @TimeSpan.FromSeconds(match.Duration).ToString(@"mm\:ss")</strong>
+                        </div>
+                        <div>
+                            <strong>@(match.PlayerSlot < 5 ? "Radiant" : "Dire")</strong>
+                        </div>
                     </td>
                     <td>
-                        <div class="assists"><strong>@match.Assists</strong></div>
+                        <div class="kill">
+                            <strong>@match.Kills</strong>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="death">
+                            <strong>@match.Deaths</strong>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="assists">
+                            <strong>@match.Assists</strong>
+                        </div>
                     </td>
                 </tr>
             }
@@ -221,7 +251,9 @@
         else
         {
             <tr>
-                <td colspan="7" style="text-align: center;"><strong>No data</strong></td>
+                <td colspan="7" style="text-align: center;">
+                    <strong>No data</strong>
+                </td>
             </tr>
         }
 

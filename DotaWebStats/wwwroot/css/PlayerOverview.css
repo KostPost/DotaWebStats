@@ -152,6 +152,12 @@
     background-color: #f2f2f2;
 }
 
+.hero-info {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust space between the image and name as needed */
+}
+
 .hero-image {
     width: 70px; /* Set a fixed size for hero images */
     height: auto;

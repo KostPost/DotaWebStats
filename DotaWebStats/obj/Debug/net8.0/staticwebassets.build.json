@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "3eeAC+l0a+f2FdbU7HO0yMgazlyV+D6rXCyg22tF6tk=",
+  "Hash": "sxYnK6Ch7r+tTQmvsHXLog+42VwBU15Kx5d6ejYhhYk=",
   "Source": "DotaWebStats",
   "BasePath": "_content/DotaWebStats",
   "Mode": "Default",
@@ -72,6 +72,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\_InfoPlayerLayout.css"
+    },
+    {
+      "Identity": "P:\\DotaWebStats\\DotaWebStats\\wwwroot\\css\\MatchStyle.css",
+      "SourceId": "DotaWebStats",
+      "SourceType": "Discovered",
+      "ContentRoot": "P:\\DotaWebStats\\DotaWebStats\\wwwroot\\",
+      "BasePath": "_content/DotaWebStats",
+      "RelativePath": "css/MatchStyle.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\MatchStyle.css"
     },
     {
       "Identity": "P:\\DotaWebStats\\DotaWebStats\\wwwroot\\css\\PlayerOverview.css",

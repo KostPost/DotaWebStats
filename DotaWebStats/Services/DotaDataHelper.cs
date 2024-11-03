@@ -40,10 +40,52 @@ public class DotaDataHelper
                 _ => "Unknown"
             };
         }
-
+    
         return recentMatchesList;
     }
+    
+    // public static RecentMatches SetGameModeName(RecentMatches recentMatchesList)
+    // {
+    //     foreach (var match in recentMatchesList)
+    //     {
+    //         match.GameModeName = match.GameMode switch
+    //         {
+    //             0 => "Unknown",
+    //             1 => "All Pick",
+    //             2 => "Captains Mode",
+    //             3 => "Random Draft",
+    //             4 => "Single Draft",
+    //             5 => "All Random",
+    //             6 => "Intro",
+    //             7 => "Diretide",
+    //             8 => "Reverse Captains Mode",
+    //             9 => "Greeviling",
+    //             10 => "Tutorial",
+    //             11 => "Mid Only",
+    //             12 => "Least Played",
+    //             13 => "Limited Heroes",
+    //             14 => "Compendium Matchmaking",
+    //             15 => "Custom",
+    //             16 => "Captains Draft",
+    //             17 => "Balanced Draft",
+    //             18 => "Ability Draft",
+    //             19 => "Event",
+    //             20 => "All Random Deathmatch",
+    //             21 => "1v1 Mid",
+    //             22 => "All Draft",
+    //             23 => "Turbo",
+    //             24 => "Mutation",
+    //             _ => "Unknown"
+    //         };
+    //     }
+    //
+    //     return recentMatchesList;
+    // }
 
+
+
+    
+    
 
 
     public string GetRankImagePath(int rankTier)
@@ -103,10 +145,22 @@ public class DotaDataHelper
 
     public static List<RecentMatches> GetCorrectStats(List<RecentMatches> recentMatchesList)
     {
+        if (recentMatchesList.Count == 0)
+        {
+            Console.WriteLine("recentMatchesList is null, returning an empty list.");
+            return new List<RecentMatches>(); 
+        }
+
         using var httpClient = new HttpClient();
 
         var response = httpClient.GetStringAsync(ApiConstants.DotaApi.GetHeroes()).Result;
         var heroes = JsonSerializer.Deserialize<List<DotaHero>>(response);
+        
+        if (heroes == null || !heroes.Any())
+        {
+            Console.WriteLine("Heroes data is null or empty.");
+            return recentMatchesList; 
+        }
 
         var heroDictionary = new Dictionary<int, (string Name, string LocalizedName)>();
         foreach (var hero in heroes)
@@ -122,20 +176,20 @@ public class DotaDataHelper
             {
                 match.HeroName = heroInfo.Name;
                 match.LocalizedName = heroInfo.LocalizedName;
-                match.HeroImageUrl = ApiConstants.GetHeroImageUrl(heroInfo.Name); // Get the hero image URL
+                match.HeroImageUrl = ApiConstants.GetHeroImageUrl(heroInfo.Name); 
             }
         }
 
         recentMatchesList = SetWinLoss(recentMatchesList);
 
-
         return recentMatchesList;
     }
 
 
+
     public static RecentMatchesSummary GetRecentAverageMaximum(List<RecentMatches> recentMatches)
     {
-        if (recentMatches == null || recentMatches.Count == 0)
+        if (recentMatches.Count == 0)
         {
             return new RecentMatchesSummary();
         }
@@ -200,7 +254,7 @@ public class DotaDataHelper
         return recentMatchesSummary;
     }
 
-    public static List<RecentMatches> SetWinLoss(List<RecentMatches> recentMatches)
+    private static List<RecentMatches> SetWinLoss(List<RecentMatches> recentMatches)
     {
         foreach (var match in recentMatches)
         {
@@ -230,7 +284,35 @@ public class DotaDataHelper
 
         return recentMatches;
     }
+    public static RecentMatches SetWinLoss(RecentMatches recentMatch)
+    {
+        if (recentMatch.PlayerSlot < 128)
+        {
+            if (recentMatch.RadiantWin)
+            {
+                recentMatch.IsPlayerWin = true;
+            }
+            else
+            {
+                recentMatch.IsPlayerWin = false;
+            }
+        }
+        else
+        {
+            if (recentMatch.RadiantWin)
+            {
+                recentMatch.IsPlayerWin = false;
+            }
+            else
+            {
+                recentMatch.IsPlayerWin = true;
+            }
+        }
 
+        return recentMatch;
+    }
+    
+    
     public static double CalculateWinRate(int wins, int losses)
     {
         if (wins + losses == 0)

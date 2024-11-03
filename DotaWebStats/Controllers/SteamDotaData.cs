@@ -8,7 +8,6 @@ public interface ISteamDotaData
 {
     Task<UserDotaStats?> GetPlayerSummary(long dotaId);
 
-    // Task<WinLoseStats?> GetPlayerWinLoss(long accountId);
 }
 
 public class SteamDotaData(IConfiguration configuration, IHttpClientFactory httpClientFactory) : ISteamDotaData

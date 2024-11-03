@@ -12,14 +12,14 @@ namespace DotaWebStats.Controllers
         public async Task<IActionResult> Index(long id)
         {
             var userStats = await _dotaDataService.GetPlayerSummary(id);
-    
+
             if (userStats == null)
             {
                 return NotFound($"Player with ID {id} not found.");
             }
 
             var recentMatchesSummary = await _dotaDataService.RecentMatchesSummary(id);
-    
+
             if (recentMatchesSummary == null)
             {
                 return NotFound($"Recent matches for player with ID {id} not found.");
@@ -30,7 +30,7 @@ namespace DotaWebStats.Controllers
             {
                 return NotFound($"Recent matches for player with ID {id} not found.");
             }
-            
+
 
             var viewModel = new PlayerViewModel
             {
@@ -44,31 +44,30 @@ namespace DotaWebStats.Controllers
 
 
 
-        
-        
+
+
         [HttpGet("player/{id}/overview")]
         public async Task<IActionResult> Overview(long id)
         {
             var userStats = await _dotaDataService.GetPlayerSummary(id);
-    
-            if (userStats == null)
+
+            if (userStats is null) // Using is null for clarity with nullable reference types
             {
                 return NotFound($"Player with ID {id} not found.");
             }
 
             var recentMatchesSummary = await _dotaDataService.RecentMatchesSummary(id);
-    
-            if (recentMatchesSummary == null)
+
+            if (recentMatchesSummary is null)
             {
                 return NotFound($"Recent matches for player with ID {id} not found.");
             }
 
             var recentMatches = await _dotaDataService.GetRecentMatches(id);
-            if (recentMatches == null)
+            if (recentMatches is null)
             {
                 return NotFound($"Recent matches for player with ID {id} not found.");
             }
-            
 
             var viewModel = new PlayerViewModel
             {
@@ -81,10 +80,7 @@ namespace DotaWebStats.Controllers
         }
 
 
-    //     [HttpGet("player/{id}/matches")]
-    //     public async Task<IActionResult> Matches(long id)
-    //     {
-    //         
-    //     }
-    // }
+      
+        
+    }
 }

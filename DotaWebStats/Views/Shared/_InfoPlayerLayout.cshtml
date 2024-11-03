@@ -6,7 +6,7 @@
 
 @{
     Layout = "_Layout";
-    ViewData["Title"] = $"Player Profile - {Model.Profile.Personaname}";
+    ViewData["Title"] = $"Player Profile - {Model.Profile.UserName}";
 
     WinLoseStats? winLoseStats = null;
 
@@ -35,10 +35,10 @@
     <div class="profile-container">
         <div class="avatar-info-container">
             <div class="avatar-container">
-                <img src="@Model.Profile.AvatarFull" alt="@Model.Profile.Personaname's avatar" class="img-fluid rounded-circle mb-3" style="width: 100%; max-width: 200px;"/>
+                <img src="@Model.Profile.AvatarFull" alt="@Model.Profile.UserName's avatar" class="img-fluid rounded-circle mb-3" style="width: 100%; max-width: 200px;"/>
             </div>
             <div class="info-container">
-                <h1>@Model.Profile.Personaname</h1>
+                <h1>@Model.Profile.UserName</h1>
                 @if (winLoseStats != null)
                 {
                     <p class="win-rate">Win Rate: @(winLoseStats.WinRate.ToString("F2"))%</p>

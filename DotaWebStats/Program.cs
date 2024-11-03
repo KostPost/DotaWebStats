@@ -14,6 +14,8 @@ builder.Services.AddScoped<ISteamAuthService, SteamAuthService>();
 builder.Services.AddScoped<DotaDataService>();
 builder.Services.AddScoped<IDotaDataService, DotaDataService>();
 
+builder.Services.AddScoped<ApiService>();
+
 builder.Services.AddScoped<DotaDataHelper>();
 
 var app = builder.Build();

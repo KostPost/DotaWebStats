@@ -1,6 +1,5 @@
 ﻿using DotaWebStats.Constants;
 using DotaWebStats.Models;
-using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 
 namespace DotaWebStats.Services;
@@ -17,15 +16,10 @@ public interface ISteamAuthService
     Task SetUserDataAsync(UserDotaStats userData, HttpContext httpContext);
 }
 
-public class SteamAuthService : ISteamAuthService
+public class SteamAuthService(IHttpContextAccessor httpContextAccessor) : ISteamAuthService
 {
-    private const string RedirectUri = UrlConstants.IndexPage;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
-    public SteamAuthService(IHttpContextAccessor httpContextAccessor)
-    {
-        _httpContextAccessor = httpContextAccessor;
-    }
 
     public long? SteamId { get; private set; }
     public long? Dota2Id { get; private set; }
@@ -38,29 +32,33 @@ public class SteamAuthService : ISteamAuthService
 
     public async Task InitializeAsync(HttpContext httpContext)
     {
-        var steamIdCookie = httpContext.Request.Cookies["SteamId"];
-        var dota2IdCookie = httpContext.Request.Cookies["Dota2Id"];
-        var userDataCookie = httpContext.Request.Cookies["UserData"];
+        await Task.Run(() =>
+        {
+            var steamIdCookie = httpContext.Request.Cookies["SteamId"];
+            var dota2IdCookie = httpContext.Request.Cookies["Dota2Id"];
+            var userDataCookie = httpContext.Request.Cookies["UserData"];
 
-        if (long.TryParse(steamIdCookie, out long steamId))
-        {
-            SteamId = steamId;
-        }
+            if (long.TryParse(steamIdCookie, out long steamId))
+            {
+                SteamId = steamId;
+            }
 
-        if (long.TryParse(dota2IdCookie, out long dota2Id))
-        {
-            Dota2Id = dota2Id;
-        }
-        else if (SteamId.HasValue)
-        {
-            Dota2Id = ConvertSteamIdToDota2Id(SteamId.Value);
-        }
+            if (long.TryParse(dota2IdCookie, out long dota2Id))
+            {
+                Dota2Id = dota2Id;
+            }
+            else if (SteamId.HasValue)
+            {
+                Dota2Id = ConvertSteamIdToDota2Id(SteamId.Value);
+            }
 
-        if (!string.IsNullOrEmpty(userDataCookie))
-        {
-            UserData = JsonSerializer.Deserialize<UserDotaStats>(userDataCookie);
-        }
+            if (!string.IsNullOrEmpty(userDataCookie))
+            {
+                UserData = JsonSerializer.Deserialize<UserDotaStats>(userDataCookie);
+            }
+        });
     }
+
 
     public string GetSteamLoginUrl()
     {

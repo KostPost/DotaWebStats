@@ -1,0 +1,118 @@
+﻿.white-box-container {
+    background-color: #ffffff; /* White background for the content box */
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+    max-width: 1200px;
+    margin: 50px auto; /* Centers the box horizontally and adds space above and below */
+}
+
+
+.match-details-container {
+    background-color: #ffffff; /* Light gray */
+    color: #000; /* Black text */
+    padding: 20px;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+}
+
+/* Остальные стили остаются без изменений */
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.victory-status {
+    font-size: 24px;
+    color: #000; /* Black text for victory status */
+    background: #ffffff; /* Light gray */
+    border: 2px solid #000;
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    max-width: 1200px;
+}
+
+.score-container {
+    background-color: #ffffff; /* Gray background */
+    border: 2px solid #000; /* Black border */
+    border-radius: 10px; /* Rounded corners */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centered content */
+    padding: 10px;
+    font-size: 28px;
+}
+
+.radiant-score {
+    color: #76c76e; /* Green for Radiant score */
+}
+
+.dire-score {
+    color: #ff5e57; /* Red for Dire score */
+}
+
+.separator {
+    margin: 0 10px;
+    color: #000; /* Black */
+}
+
+.match-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.warning {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #ff0000; /* Red for warning */
+    display: flex;
+    align-items: center;
+}
+
+.actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.parse-button, .replay-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #fff; /* White text */
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.parse-button {
+    background-color: #000; /* Black for parse button */
+}
+
+.replay-button {
+    background-color: #808080; /* Gray for replay button */
+}
+
+.parse-button:hover {
+    background-color: #444; /* Dark gray for hover effect */
+}
+
+.replay-button:hover {
+    background-color: #666; /* Medium gray for hover effect */
+}
+
+/* Additional styles for win/lose state */
+.win {
+    color: #76c76e; /* Green for win */
+}
+
+.lose {
+    color: #ff5e57; /* Red for lose */
+}

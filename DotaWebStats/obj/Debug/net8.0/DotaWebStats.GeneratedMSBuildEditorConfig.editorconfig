@@ -18,6 +18,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = P:\DotaWebStats\DotaWebStats
 build_property._RazorSourceGeneratorDebug = 
 
+[P:/DotaWebStats/DotaWebStats/Views/GeneralPages/Match.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR2VuZXJhbFBhZ2VzXE1hdGNoLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [P:/DotaWebStats/DotaWebStats/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
