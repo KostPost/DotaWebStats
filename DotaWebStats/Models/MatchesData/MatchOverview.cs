@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 // for the first add a team victory, the score, time, game data, game type, match id,.. region
 
-public class Match
+public class MatchOverview
 {
     [JsonPropertyName("match_id")]
     public long MatchId { get; set; }
@@ -159,6 +159,9 @@ public class Player
 
     [JsonPropertyName("actions_per_min")]
     public int ActionsPerMin { get; set; }
+    
+    public string? HeroImageUrl { get; set; }
+
 }
 
 public class PickBan

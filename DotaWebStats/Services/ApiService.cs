@@ -23,7 +23,7 @@ public class ApiService(HttpClient httpClient)
             return await GetJsonAsync(ApiConstants.DotaApi.GetRecentMatches(accountId), "RecentMatches");
         }
 
-        public async Task<Match?> GetMatchInfoAsync(long matchId)
+        public async Task<MatchOverview?> GetMatchInfoAsync(long matchId)
         {
             var response = await _httpClient.GetAsync(ApiConstants.DotaApi.GetMatch(matchId));
 
@@ -34,7 +34,7 @@ public class ApiService(HttpClient httpClient)
             }
 
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<Match>(content);
+            return JsonSerializer.Deserialize<MatchOverview>(content);
         }
 
         private async Task<JsonElement?> GetJsonAsync(string url, string description)

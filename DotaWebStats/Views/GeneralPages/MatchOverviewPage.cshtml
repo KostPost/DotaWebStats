@@ -1,0 +1,126 @@
+﻿@using DotaWebStats.Services
+@using DotaWebStats.Services.Helpers
+@model DotaWebStats.Models.MatchesData.MatchOverview
+
+@inject DotaDataHelper DotaDataHelper
+@{
+    ViewData["Title"] = @Model.MatchId + " - Match Details";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Match Details - @Model.MatchId</title>
+    <link rel="stylesheet" href="~/css/MatchOverviewPageStyle.css"/>
+</head>
+<body>
+<div class="white-box-container">
+    <div class="match-details-container">
+        <!-- Your existing match details content -->
+        <div class="header">
+            <span class="victory-status">@((Model.RadiantWin ? "Radiant Victory" : "Dire Victory"))</span>
+            <div class="score-container">
+                <span class="radiant-score @(Model.RadiantWin ? "win" : "lose")">@Model.RadiantScore</span>
+                <span class="separator">:</span>
+                <span class="dire-score @(Model.RadiantWin ? "lose" : "win")">@Model.DireScore</span>
+            </div>
+        </div>
+
+        <div class="match-info">
+            <span class="game-type">Game Mode: @(Model.GameMode)</span>
+            <span class="duration">Duration: @(TimeSpan.FromSeconds(Model.Duration).ToString(@"hh\:mm\:ss"))</span>
+            <span class="region">Region: @(Model.Region)</span>
+            <span class="match-id">Match ID: @Model.MatchId</span>
+            <span class="time-ended">@("Ended " + DateTimeOffset.FromUnixTimeSeconds(Model.StartTime).ToLocalTime().ToString("f"))</span>
+        </div>
+
+        <div class="warning">
+            <span>⚠️ The replay for this match has not yet been parsed. Not all data may be available.</span>
+        </div>
+
+        <div class="actions">
+            <a href="@Model.ReplayUrl" class="replay-button">Replay</a>
+        </div>
+    </div>
+</div>
+
+<!-- New container for player names -->
+<div class="white-box-container">
+    <div class="players-container">
+        
+        <div class="team radiant">
+            <h2>Radiant Team</h2>
+            <!-- Add player names here when you have the data -->
+            <div class="player-list">
+                @foreach (var player in Model.Players.Where(p => p.IsRadiant))
+                {   
+                    <img src="@DotaHeroHelper.GetHeroImage(player.HeroId)" alt="Hero Image"/>
+                    
+                    <div class="player-name">@player.PersonaName</div>
+                    
+                    <div> @player.Level</div>
+                    
+                    <div> @player.Kills </div>
+                    
+                    <div> @player.Deaths </div>
+                    
+                    <div> @player.Assists </div>
+                    
+                    <div> @player.LastHits </div>
+                    
+                    <div> @player.Denies </div>
+                    
+                    <div> @player.TotalGold </div>
+                    
+                    <div> @player.GoldPerMin   </div>
+                    
+                    <div> @player.XpPerMin </div>
+                    
+                    <div> @player.HeroDamage </div>
+                    
+                    <div> @player.TowerDamage </div>
+                    
+                    <div> @player.HeroHealing </div>
+                    
+                    
+                    <img src="@DotaItemHelper.GetItemImage(player.Item0)" alt="Item Image"/>
+                    <div> @player.Item1 </div>
+                    <div> @player.Item2 </div>
+                    <div> @player.Item3 </div>
+                    <div> @player.Item4 </div>
+                    <div> @player.Item5 </div>
+                    
+                    <img src="@DotaItemHelper.GetItemImage(player.Backpack0)" alt="Item Image"/>
+                    <div> @player.Backpack0 </div>
+                    <div> @player.Backpack1 </div>
+                    <div> @player.Backpack2 </div>
+
+                    <div> @player. </div>
+
+
+                    
+                    
+                    
+                }
+            </div>
+        </div>
+
+        
+        <div class="team dire">
+            <h2>Dire Team</h2>
+            <!-- Add player names here when you have the data -->
+            <div class="player-list">
+                @foreach (var player in Model.Players.Where(p => !p.IsRadiant))
+                {
+                    <img src="@DotaHeroHelper.GetHeroImage(player.HeroId)" alt="Hero Image"/>
+                    
+                    <div class="player-name">@player.PersonaName</div>
+                }
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+</body>
+</html>

@@ -92,17 +92,13 @@
     transition: background 0.3s;
 }
 
-.parse-button {
-    background-color: #000; /* Black for parse button */
-}
+
 
 .replay-button {
     background-color: #808080; /* Gray for replay button */
 }
 
-.parse-button:hover {
-    background-color: #444; /* Dark gray for hover effect */
-}
+
 
 .replay-button:hover {
     background-color: #666; /* Medium gray for hover effect */

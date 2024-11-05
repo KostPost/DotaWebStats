@@ -155,10 +155,25 @@
 .hero-info {
     display: flex;
     align-items: center;
-    gap: 10px; /* Adjust space between the image and name as needed */
+    gap: 10px;
 }
 
 .hero-image {
-    width: 70px; /* Set a fixed size for hero images */
+    width: 70px;
     height: auto;
+}
+
+.hero-name-link {
+    font-size: 1.1em; /* Adjust font size as needed */
+    color: #007bff; /* Blue color for link */
+    text-decoration: none;
+    padding: 3px 6px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.hero-name-link:hover {
+    background-color: #f0f8ff; /* Light blue background on hover */
+    color: #0056b3; /* Darker blue text on hover */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }

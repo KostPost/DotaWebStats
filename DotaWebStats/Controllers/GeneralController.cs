@@ -19,6 +19,6 @@ public class GeneralController(IDotaDataService dotaDataService) : Controller
             return NotFound("Match not found.");
         }
 
-        return View("~/Views/GeneralPages/Match.cshtml", match);
+        return View("~/Views/GeneralPages/MatchOverviewPage.cshtml", match);
     }
 }

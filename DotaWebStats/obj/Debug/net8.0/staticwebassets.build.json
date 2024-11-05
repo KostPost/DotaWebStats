@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "sxYnK6Ch7r+tTQmvsHXLog+42VwBU15Kx5d6ejYhhYk=",
+  "Hash": "J+ECTjnV6/n7TE4L4Z+M0v6VmXqzUEnDt0Jzyz7kqOM=",
   "Source": "DotaWebStats",
   "BasePath": "_content/DotaWebStats",
   "Mode": "Default",
@@ -74,12 +74,12 @@
       "OriginalItemSpec": "wwwroot\\css\\_InfoPlayerLayout.css"
     },
     {
-      "Identity": "P:\\DotaWebStats\\DotaWebStats\\wwwroot\\css\\MatchStyle.css",
+      "Identity": "P:\\DotaWebStats\\DotaWebStats\\wwwroot\\css\\MatchOverviewPageStyle.css",
       "SourceId": "DotaWebStats",
       "SourceType": "Discovered",
       "ContentRoot": "P:\\DotaWebStats\\DotaWebStats\\wwwroot\\",
       "BasePath": "_content/DotaWebStats",
-      "RelativePath": "css/MatchStyle.css",
+      "RelativePath": "css/MatchOverviewPageStyle.css",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -90,7 +90,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\MatchStyle.css"
+      "OriginalItemSpec": "wwwroot\\css\\MatchOverviewPageStyle.css"
     },
     {
       "Identity": "P:\\DotaWebStats\\DotaWebStats\\wwwroot\\css\\PlayerOverview.css",

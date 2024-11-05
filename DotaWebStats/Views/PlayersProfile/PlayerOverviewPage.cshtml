@@ -1,4 +1,5 @@
 ﻿@using DotaWebStats.Constants
+@using DotaWebStats.Services.Helpers
 @model PlayerViewModel
 
 @section Styles {'
@@ -192,14 +193,15 @@
                 <tr>
 
 
-                <td>
-                    <div class="hero-info">
-                        <img src="@heroImageUrl" alt="Hero Image" class="hero-image"/>
-                        <a href="@UrlConstants.MatchOverviewPage(match.MatchId.ToString())" style="text-decoration: none; color: inherit;">
-                            <strong>@match.LocalizedName</strong>
-                        </a>
-                    </div>
-                </td>
+          <td>
+              <div class="hero-info">
+                  <img src="@heroImageUrl" alt="Hero Image" class="hero-image"/>
+                  <a href="@UrlConstants.MatchOverviewPage(match.MatchId.ToString())" class="hero-name-link">
+                      <strong>@match.LocalizedName</strong>
+                  </a>
+              </div>
+          </td>
+
 
 
                     <td>
@@ -216,7 +218,7 @@
 
                     <td>
                         <div>
-                            <strong>Game Mode: @match.GameModeName</strong>
+                            <strong>Game Mode: @DotaDataHelper.GetGa</strong>
                         </div>
                         <div>
                             <strong>@match.AverageRankName</strong>

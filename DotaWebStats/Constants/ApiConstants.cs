@@ -7,6 +7,9 @@ public static class ApiConstants
 
     private const string HeroImageBaseUrl =
         "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/";
+    
+    private const string ItemImageBaseUrl =
+        "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/items/";
 
     public static string GetSteamApiKey(IConfiguration configuration)
     {
@@ -40,14 +43,24 @@ public static class ApiConstants
             $"{DotaApiBaseUrl}/players/{accountId}/wl";
         
         public static string GetHeroes() => $"{DotaApiBaseUrl}/heroes";
+
+        public static string GetItems() => "https://api.opendota.com/api/constants/items";
+
         
         public static string GetMatch(long matchId) =>
             $"{DotaApiBaseUrl}/matches/{matchId}";
+
     }
 
     public static string GetHeroImageUrl(string heroName)
     {
         string formattedHeroName = heroName.ToLowerInvariant().Replace(" ", "_");
         return $"{HeroImageBaseUrl}{formattedHeroName}.png";
+    }
+    
+    public static string GetItemImageUrl(string itemName)
+    {
+        string formattedHeroName = itemName.ToLowerInvariant().Replace(" ", "_");
+        return $"{ItemImageBaseUrl}{formattedHeroName}.png";
     }
 }

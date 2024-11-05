@@ -1,4 +1,6 @@
-﻿using DotaWebStats.Models.MatchesData;
+﻿using DotaWebStats.Models.DotaData;
+using DotaWebStats.Models.MatchesData;
+using DotaWebStats.Services.Helpers;
 
 namespace DotaWebStats.Services;
 
@@ -16,7 +18,7 @@ public interface IDotaDataService
 
     Task<List<RecentMatches>?> GetRecentMatches(long accountId);
 
-    Task<Match?> GetMatchInfo(long matchId);
+    Task<MatchOverview?> GetMatchInfo(long matchId);
 }
 
 public class DotaDataService(IHttpClientFactory httpClientFactory, ApiService apiService) : IDotaDataService
@@ -114,7 +116,7 @@ public class DotaDataService(IHttpClientFactory httpClientFactory, ApiService ap
         return DotaDataHelper.GetCorrectStats(recentMatches);
     }
 
-    public async Task<Match?> GetMatchInfo(long matchId)
+    public async Task<MatchOverview?> GetMatchInfo(long matchId)
     {
         return await _apiService.GetMatchInfoAsync(matchId);
     }

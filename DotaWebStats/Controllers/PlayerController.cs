@@ -39,7 +39,7 @@ namespace DotaWebStats.Controllers
                 RecentMatches = recentMatches
             };
 
-            return View("~/Views/PlayersProfile/Player.cshtml", viewModel);
+            return View("~/Views/PlayersProfile/PlayerOverviewPage.cshtml", viewModel);
         }
 
 
@@ -76,7 +76,7 @@ namespace DotaWebStats.Controllers
                 RecentMatches = recentMatches
             };
 
-            return View("~/Views/PlayersProfile/Player.cshtml", viewModel);
+            return View("~/Views/PlayersProfile/PlayerOverviewPage.cshtml", viewModel);
         }
 
 
