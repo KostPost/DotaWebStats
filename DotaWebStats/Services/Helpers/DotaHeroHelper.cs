@@ -6,8 +6,8 @@ namespace DotaWebStats.Services.Helpers;
 
 public class DotaHeroHelper
 {
-    private static readonly Dictionary<int, (string Name, string LocalizedName)> HeroDictionary = new();
-    private static readonly Dictionary<int, string> HeroNamesDictionary = new();
+    private static readonly Dictionary<int, string> HeroLocalizedNameDictionary = new();
+    private static readonly Dictionary<int, string> HeroInternalNameDictionary = new();
     private static readonly Lazy<Task> InitializeTask = new Lazy<Task>(InitializeAsyncInternal);
 
     public static Task InitializeAsync()
@@ -17,16 +17,15 @@ public class DotaHeroHelper
 
     private static async Task InitializeAsyncInternal()
     {
-        if (HeroDictionary.Any()) return;
+        if (HeroLocalizedNameDictionary.Any()) return;
 
-        var heroes = await FetchHeroesFromApiAsync();
-        if (heroes == null || !heroes.Any()) return;
+        var heroesDictionary = await FetchHeroesFromApiAsync();
+        if (heroesDictionary == null || !heroesDictionary.Any()) return;
 
-        foreach (var hero in heroes)
+        foreach (var hero in heroesDictionary)
         {
-            var heroName = hero.Name.Replace("npc_dota_hero_", "").ToLower();
-            HeroDictionary[hero.Id] = (heroName, hero.LocalizedName);
-            HeroNamesDictionary[hero.Id] = heroName;
+            HeroLocalizedNameDictionary[hero.Id] = hero.LocalizedName;
+            HeroInternalNameDictionary[hero.Id] = hero.Name.Replace("npc_dota_hero_", "").ToLower(); // Convert to code name
         }
     }
 
@@ -45,31 +44,27 @@ public class DotaHeroHelper
         }
     }
 
+    public static string GetHeroLocalizedName(int heroId)
+    {
+        if (!HeroLocalizedNameDictionary.Any()) InitializeAsync().Wait();
+
+        return HeroLocalizedNameDictionary.TryGetValue(heroId, out var heroName) ? heroName : "Unknown Hero";
+    }
+
     public static string GetHeroName(int heroId)
     {
-        return HeroNamesDictionary.TryGetValue(heroId, out var heroName) ? heroName : "Unknown Hero";
-    }
-    
+        if (!HeroInternalNameDictionary.Any()) InitializeAsync().Wait();
 
-    
+        return HeroInternalNameDictionary.TryGetValue(heroId, out var heroName) ? heroName : "Unknown Hero";
+    }
 
     public static string GetHeroImage(string heroName)
     {
         return ApiConstants.GetHeroImageUrl(heroName);
     }
-    
+
     public static string GetHeroImage(int heroId)
     {
         return ApiConstants.GetHeroImageUrl(GetHeroName(heroId));
-    }
-
-    public static void SetHeroInfo(RecentMatches match)
-    {
-        if (HeroDictionary.TryGetValue(match.HeroId, out var heroInfo))
-        {
-            match.HeroName = heroInfo.Name;
-            match.LocalizedName = heroInfo.LocalizedName;
-            match.HeroImageUrl = ApiConstants.GetHeroImageUrl(heroInfo.Name);
-        }
     }
 }

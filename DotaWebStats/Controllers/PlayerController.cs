@@ -1,6 +1,7 @@
 ﻿using DotaWebStats.Models;
 using Microsoft.AspNetCore.Mvc;
 using DotaWebStats.Services;
+using DotaWebStats.Services.Helpers;
 
 namespace DotaWebStats.Controllers
 {
@@ -11,6 +12,8 @@ namespace DotaWebStats.Controllers
         [HttpGet("player/{id}")]
         public async Task<IActionResult> Index(long id)
         {
+            DotaDataHelper.IsDotaIdCorrect(id);
+            
             var userStats = await _dotaDataService.GetPlayerSummary(id);
 
             if (userStats == null)
@@ -49,6 +52,10 @@ namespace DotaWebStats.Controllers
         [HttpGet("player/{id}/overview")]
         public async Task<IActionResult> Overview(long id)
         {
+            
+            DotaDataHelper.IsDotaIdCorrect(id);
+            
+            
             var userStats = await _dotaDataService.GetPlayerSummary(id);
 
             if (userStats is null) // Using is null for clarity with nullable reference types

@@ -57,12 +57,5 @@ public class RecentMatches
     [JsonPropertyName("hero_variant")] public int? HeroVariant { get; set; }
     
     
-    public string? GameModeName { get; set; }
-    public bool IsPlayerWin { get; set; }
-    public string? HeroImageUrl { get; set; }
-    public string? HeroName { get; set; }
-    public string? LocalizedName { get; set; }
-    public string? AverageRankName { get; set; } 
-    
     
 }

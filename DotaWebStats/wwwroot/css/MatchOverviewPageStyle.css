@@ -8,6 +8,7 @@
 }
 
 
+
 .match-details-container {
     background-color: #ffffff; /* Light gray */
     color: #000; /* Black text */
@@ -112,3 +113,450 @@
 .lose {
     color: #ff5e57; /* Red for lose */
 }
+
+
+
+
+
+
+/*!* Main container styles *!*/
+/*.players-container {*/
+/*    background-color: #ffffff;*/
+/*    border-radius: 8px;*/
+/*    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+/*    padding: 20px;*/
+/*    margin: 20px auto;*/
+/*    max-width: 1400px;*/
+/*}*/
+
+/*!* Team header styles *!*/
+/*.players-container h2 {*/
+/*    font-size: 24px;*/
+/*    font-weight: bold;*/
+/*    color: #2d3748;*/
+/*    margin-bottom: 16px;*/
+/*    padding-bottom: 8px;*/
+/*    border-bottom: 2px solid #e2e8f0;*/
+/*}*/
+
+/*!* Column headers styling *!*/
+/*.column-headers {*/
+/*    display: grid;*/
+/*    grid-template-columns: 50px 150px 40px repeat(11, 60px) 200px;*/
+/*    gap: 4px;*/
+/*    padding: 8px 4px;*/
+/*    background-color: #f7fafc;*/
+/*    border-radius: 6px;*/
+/*    margin-bottom: 8px;*/
+/*}*/
+
+/*.column-headers div {*/
+/*    font-weight: 600;*/
+/*    color: #4a5568;*/
+/*    font-size: 13px;*/
+/*    text-align: center;*/
+/*    padding: 8px 4px;*/
+/*}*/
+
+/*!* Player row styling *!*/
+/*.player-row {*/
+/*    display: grid;*/
+/*    grid-template-columns: 50px 150px 40px repeat(11, 60px) 200px;*/
+/*    gap: 4px;*/
+/*    align-items: center;*/
+/*    padding: 8px 4px;*/
+/*    border-bottom: 1px solid #edf2f7;*/
+/*    transition: background-color 0.2s;*/
+/*}*/
+
+/*.player-row:hover {*/
+/*    background-color: #f8fafc;*/
+/*}*/
+
+/*!* Hero image styling *!*/
+/*.hero-image {*/
+/*    width: 40px;*/
+/*    height: 40px;*/
+/*    border-radius: 4px;*/
+/*    object-fit: cover;*/
+/*}*/
+
+/*!* Player name styling *!*/
+/*.player-name {*/
+/*    font-weight: 500;*/
+/*    color: #2d3748;*/
+/*    white-space: nowrap;*/
+/*    overflow: hidden;*/
+/*    text-overflow: ellipsis;*/
+/*    padding-left: 8px;*/
+/*}*/
+
+/*!* Numeric values styling *!*/
+/*.player-row div:not(.player-name):not(.items-container):not(.backpack-container) {*/
+/*    text-align: center;*/
+/*    font-size: 14px;*/
+/*    color: #4a5568;*/
+/*}*/
+
+/*!* Items container styling *!*/
+
+/*.item-slot {*/
+/*    width: 32px;*/
+/*    height: 32px;*/
+/*    background-color: rgba(0, 0, 0, 0.1);*/
+/*    border-radius: 4px;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*}*/
+
+/*.backpack-slot {*/
+/*    width: 24px;*/
+/*    height: 24px;*/
+/*    background-color: rgba(0, 0, 0, 0.1);*/
+/*    border-radius: 3px;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*}*/
+
+/*.item-slot img, .backpack-slot img {*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    object-fit: cover;*/
+/*    border-radius: inherit;*/
+/*}*/
+
+/*.items-container {*/
+/*    display: flex;*/
+/*    gap: 2px;*/
+/*}*/
+
+/*.backpack-container {*/
+/*    display: flex;*/
+/*    gap: 2px;*/
+/*    margin-top: 2px;*/
+/*}*/
+
+/*.items-container img {*/
+/*    width: 32px;*/
+/*    height: 32px;*/
+/*    border-radius: 4px;*/
+/*}*/
+
+/*.backpack-container img {*/
+/*    width: 24px;*/
+/*    height: 24px;*/
+/*    border-radius: 3px;*/
+/*}*/
+
+/*!* Responsive design *!*/
+/*@media (max-width: 1200px) {*/
+/*    .column-headers,*/
+/*    .player-row {*/
+/*        grid-template-columns: 40px 120px 35px repeat(11, 50px) 180px;*/
+/*    }*/
+
+/*    .players-container {*/
+/*        margin: 10px;*/
+/*        padding: 10px;*/
+/*    }*/
+/*}*/
+
+/*@media (max-width: 768px) {*/
+/*    .players-container {*/
+/*        overflow-x: auto;*/
+/*    }*/
+
+/*    .column-headers,*/
+/*    .player-row {*/
+/*        min-width: 1000px;*/
+/*    }*/
+/*}*/
+
+/* Main container styles */
+.players-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 1400px;
+}
+
+/* Team header styles */
+.players-container h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2d3748;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+/* Column headers styling */
+.column-headers {
+    display: grid;
+    grid-template-columns: 50px 150px 40px repeat(11, 60px) 200px;
+    gap: 4px;
+    padding: 8px 4px;
+    background-color: #f7fafc;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.column-headers div {
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 13px;
+    text-align: center;
+    padding: 8px 4px;
+}
+
+/* Player row styling */
+.player-row {
+    display: grid;
+    grid-template-columns: 50px 150px 40px repeat(11, 60px) 200px;
+    gap: 4px;
+    align-items: center;
+    padding: 8px 4px;
+    border-bottom: 1px solid #edf2f7;
+    transition: background-color 0.2s;
+}
+
+.player-row:hover {
+    background-color: #f8fafc;
+}
+
+/* Hero image styling */
+.hero-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+/* Player name styling */
+.player-name {
+    font-weight: 500;
+    color: #2d3748;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-left: 8px;
+}
+
+/* Numeric values styling */
+.player-row div:not(.player-name):not(.items-container):not(.backpack-container) {
+    text-align: center;
+    font-size: 14px;
+    color: #4a5568;
+}
+
+/* Items styling */
+.items-container {
+    display: flex;
+    gap: 2px;
+}
+
+.items-container img {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+}
+
+/* Backpack styling */
+.backpack-container {
+    display: flex;
+    gap: 2px;
+    margin-top: 2px;
+}
+
+.backpack-container img {
+    width: 24px;
+    height: 24px;
+    border-radius: 3px;
+}
+
+/* Stats value colors */
+.positive-stat {
+    color: #48bb78;  /* Green */
+}
+
+.negative-stat {
+    color: #f56565;  /* Red */
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+    .column-headers,
+    .player-row {
+        grid-template-columns: 40px 120px 35px repeat(11, 50px) 180px;
+    }
+
+    .players-container {
+        margin: 10px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .players-container {
+        overflow-x: auto;
+        padding: 10px;
+        margin: 5px;
+    }
+
+    .column-headers,
+    .player-row {
+        min-width: 1000px;
+    }
+
+    .items-container img {
+        width: 28px;
+        height: 28px;
+    }
+
+    .backpack-container img {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Optional: Scrollbar styling for better appearance */
+.players-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.players-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.players-container::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 4px;
+}
+
+.players-container::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+.hero-name-link {
+    font-size: 1.1em; /* Adjust font size as needed */
+    color: #007bff; /* Blue color for link */
+    text-decoration: none;
+    padding: 3px 6px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+
+
+
+
+
+
+/* Draft section styles */
+.team-draft-section {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.draft-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.draft-row {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.draft-label {
+    min-width: 60px;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.heroes-list {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.hero-item {
+    position: relative;
+    width: 64px;
+    height: 36px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.hero-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-order {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 2px 6px;
+    font-size: 12px;
+    border-top-left-radius: 4px;
+}
+
+/* Ban specific styles */
+.hero-ban {
+    position: relative;
+}
+
+.hero-ban img {
+    filter: grayscale(100%);
+}
+
+.hero-ban::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: rgba(255, 0, 0, 0.7);
+    transform: translateY(-50%) rotate(-15deg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .draft-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .hero-item {
+        width: 48px;
+        height: 27px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

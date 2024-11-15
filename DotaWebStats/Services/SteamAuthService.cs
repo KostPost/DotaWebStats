@@ -1,6 +1,7 @@
 ﻿using DotaWebStats.Constants;
 using DotaWebStats.Models;
 using System.Text.Json;
+using DotaWebStats.Services.Helpers;
 
 namespace DotaWebStats.Services;
 
@@ -25,10 +26,10 @@ public class SteamAuthService(IHttpContextAccessor httpContextAccessor) : ISteam
     public long? Dota2Id { get; private set; }
     public UserDotaStats? UserData { get; private set; }
 
-    private long? ConvertSteamIdToDota2Id(long steamId)
-    {
-        return steamId - NumConstants.SteamIdToDota2IdDiff;
-    }
+    // private long? ConvertSteamIdToDota2Id(long steamId)
+    // {
+    //     return steamId - NumConstants.SteamIdToDota2IdDiff;
+    // }
 
     public async Task InitializeAsync(HttpContext httpContext)
     {
@@ -49,7 +50,7 @@ public class SteamAuthService(IHttpContextAccessor httpContextAccessor) : ISteam
             }
             else if (SteamId.HasValue)
             {
-                Dota2Id = ConvertSteamIdToDota2Id(SteamId.Value);
+                Dota2Id = DotaDataHelper.IsDotaIdCorrect(SteamId.Value);
             }
 
             if (!string.IsNullOrEmpty(userDataCookie))
@@ -93,7 +94,7 @@ public class SteamAuthService(IHttpContextAccessor httpContextAccessor) : ISteam
             if (long.TryParse(steamIdString, out long steamId))
             {
                 SteamId = steamId;
-                Dota2Id = ConvertSteamIdToDota2Id(steamId);
+                Dota2Id = DotaDataHelper.IsDotaIdCorrect(steamId);
 
                 httpContext.Response.Cookies.Append("SteamId", steamId.ToString(),
                     new CookieOptions { HttpOnly = true, Secure = true });

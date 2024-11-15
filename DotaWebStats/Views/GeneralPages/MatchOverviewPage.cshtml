@@ -1,11 +1,11 @@
-﻿@using DotaWebStats.Services
-@using DotaWebStats.Services.Helpers
+﻿@using DotaWebStats.Services.Helpers
+@using DotaWebStats.Constants
 @model DotaWebStats.Models.MatchesData.MatchOverview
 
-@inject DotaDataHelper DotaDataHelper
 @{
     ViewData["Title"] = @Model.MatchId + " - Match Details";
 }
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="~/css/MatchOverviewPageStyle.css"/>
 </head>
 <body>
+
 <div class="white-box-container">
     <div class="match-details-container">
         <!-- Your existing match details content -->
@@ -34,9 +35,6 @@
             <span class="time-ended">@("Ended " + DateTimeOffset.FromUnixTimeSeconds(Model.StartTime).ToLocalTime().ToString("f"))</span>
         </div>
 
-        <div class="warning">
-            <span>⚠️ The replay for this match has not yet been parsed. Not all data may be available.</span>
-        </div>
 
         <div class="actions">
             <a href="@Model.ReplayUrl" class="replay-button">Replay</a>
@@ -44,83 +42,298 @@
     </div>
 </div>
 
-<!-- New container for player names -->
-<div class="white-box-container">
-    <div class="players-container">
-        
-        <div class="team radiant">
-            <h2>Radiant Team</h2>
-            <!-- Add player names here when you have the data -->
-            <div class="player-list">
-                @foreach (var player in Model.Players.Where(p => p.IsRadiant))
-                {   
-                    <img src="@DotaHeroHelper.GetHeroImage(player.HeroId)" alt="Hero Image"/>
-                    
+
+<div class="players-container">
+    <h2>Radiant Team</h2>
+
+    <div class="column-headers">
+        <div>Hero</div>
+        <div>Player</div>
+        <div>LVL</div>
+        <div>K</div>
+        <div>D</div>
+        <div>A</div>
+        <div>LH/DN</div>
+        <div>Gold</div>
+        <div>GPM/XPM</div>
+        <div>HD</div>
+        <div>TD</div>
+        <div>HH</div>
+        <div>Items</div>
+    </div>
+
+    <div class="player-list">
+        @foreach (var player in Model.Players.Where(p => p.IsRadiant))
+        {
+            <div class="player-row">
+                <div>
+                    <img src="@DotaHeroHelper.GetHeroImage(player.HeroId)" alt="Hero" class="hero-image"/>
+                </div>
+
+                <a href="@UrlConstants.PlayerOverviewPage(player.AccountId.ToString())" class="hero-name-link">
                     <div class="player-name">@player.PersonaName</div>
-                    
-                    <div> @player.Level</div>
-                    
-                    <div> @player.Kills </div>
-                    
-                    <div> @player.Deaths </div>
-                    
-                    <div> @player.Assists </div>
-                    
-                    <div> @player.LastHits </div>
-                    
-                    <div> @player.Denies </div>
-                    
-                    <div> @player.TotalGold </div>
-                    
-                    <div> @player.GoldPerMin   </div>
-                    
-                    <div> @player.XpPerMin </div>
-                    
-                    <div> @player.HeroDamage </div>
-                    
-                    <div> @player.TowerDamage </div>
-                    
-                    <div> @player.HeroHealing </div>
-                    
-                    
-                    <img src="@DotaItemHelper.GetItemImage(player.Item0)" alt="Item Image"/>
-                    <div> @player.Item1 </div>
-                    <div> @player.Item2 </div>
-                    <div> @player.Item3 </div>
-                    <div> @player.Item4 </div>
-                    <div> @player.Item5 </div>
-                    
-                    <img src="@DotaItemHelper.GetItemImage(player.Backpack0)" alt="Item Image"/>
-                    <div> @player.Backpack0 </div>
-                    <div> @player.Backpack1 </div>
-                    <div> @player.Backpack2 </div>
+                </a>
 
-                    <div> @player. </div>
-
-
-                    
-                    
-                    
-                }
+                <div>@player.Level</div>
+                <div>@player.Kills</div>
+                <div>@player.Deaths</div>
+                <div>@player.Assists</div>
+                <div>@player.LastHits/@player.Denies</div>
+                <div>@player.TotalGold</div>
+                <div>@player.GoldPerMin/@player.XpPerMin</div>
+                <div>@player.HeroDamage</div>
+                <div>@player.TowerDamage</div>
+                <div>@player.HeroHealing</div>
+                <div>
+                    <div class="items-container">
+                        <div class="item-slot">
+                            @if (player.Item0 > 0)
+                            {
+                                <img src="@DotaItemHelper.GetItemImage(player.Item0)" alt="Item"/>
+                            }
+                        </div>
+                        <div class="item-slot">
+                            @if (player.Item1 > 0)
+                            {
+                                <img src="@DotaItemHelper.GetItemImage(player.Item1)" alt="Item"/>
+                            }
+                        </div>
+                        <div class="item-slot">
+                            @if (player.Item2 > 0)
+                            {
+                                <img src="@DotaItemHelper.GetItemImage(player.Item2)" alt="Item"/>
+                            }
+                        </div>
+                        <div class="item-slot">
+                            @if (player.Item3 > 0)
+                            {
+                                <img src="@DotaItemHelper.GetItemImage(player.Item3)" alt="Item"/>
+                            }
+                        </div>
+                        <div class="item-slot">
+                            @if (player.Item4 > 0)
+                            {
+                                <img src="@DotaItemHelper.GetItemImage(player.Item4)" alt="Item"/>
+                            }
+                        </div>
+                        <div class="item-slot">
+                            @if (player.Item5 > 0)
+                            {
+                                <img src="@DotaItemHelper.GetItemImage(player.Item5)" alt="Item"/>
+                            }
+                        </div>
+                    </div>
+                    <div class="backpack-container">
+                        <div class="backpack-slot">
+                            @if (player.Backpack0 > 0)
+                            {
+                                <img src="@DotaItemHelper.GetItemImage(player.Backpack0)" alt="Item"/>
+                            }
+                        </div>
+                        <div class="backpack-slot">
+                            @if (player.Backpack1 > 0)
+                            {
+                                <img src="@DotaItemHelper.GetItemImage(player.Backpack1)" alt="Item"/>
+                            }
+                        </div>
+                        <div class="backpack-slot">
+                            @if (player.Backpack2 > 0)
+                            {
+                                <img src="@DotaItemHelper.GetItemImage(player.Backpack2)" alt="Item"/>
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        
-        <div class="team dire">
-            <h2>Dire Team</h2>
-            <!-- Add player names here when you have the data -->
-            <div class="player-list">
-                @foreach (var player in Model.Players.Where(p => !p.IsRadiant))
-                {
-                    <img src="@DotaHeroHelper.GetHeroImage(player.HeroId)" alt="Hero Image"/>
-                    
-                    <div class="player-name">@player.PersonaName</div>
-                }
-            </div>
-        </div>
-        
+        }
     </div>
 </div>
+
+@* For Radiant Team *@
+<div class="team-draft-section">
+    <div class="draft-container">
+        <div class="draft-row">
+            <div class="draft-label">Picks:</div>
+            <div class="heroes-list">
+                @foreach (var pick in Model.PicksBans.Where(pb => pb.IsPick && pb.Team == 0).OrderBy(pb => pb.Order))
+                {
+                    <div class="hero-item">
+                        <img src="@DotaHeroHelper.GetHeroImage(pick.HeroId)" alt="Hero Pick" />
+                        <span class="hero-order">@(pick.Order + 1)</span>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="draft-row">
+            <div class="draft-label">Bans:</div>
+            <div class="heroes-list">
+                @{var radiantBanCounter = 1;}
+                @foreach (var ban in Model.PicksBans.Where(pb => !pb.IsPick && pb.Team == 0).OrderBy(pb => pb.Order))
+                {
+                    <div class="hero-item hero-ban">
+                        <img src="@DotaHeroHelper.GetHeroImage(ban.HeroId)" alt="Hero Ban" />
+                        <span class="hero-order">@(radiantBanCounter)</span>
+                    </div>
+                    radiantBanCounter++;
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="players-container">
+    <h2>Dire Team</h2>
+
+    <div class="column-headers">
+        <div>Hero</div>
+        <div>Player</div>
+        <div>LVL</div>
+        <div>K</div>
+        <div>D</div>
+        <div>A</div>
+        <div>LH</div>
+        <div>DN</div>
+        <div>Gold</div>
+        <div>GPM</div>
+        <div>XPM</div>
+        <div>HD</div>
+        <div>TD</div>
+        <div>HH</div>
+        <div>Items</div>
+    </div>
+
+    <div class="player-list">
+        @foreach (var player in Model.Players.Where(p => !p.IsRadiant))
+        {
+            <div class="player-row">
+                <div>
+                    <img src="@DotaHeroHelper.GetHeroImage(player.HeroId)" alt="Hero" class="hero-image"/>
+                </div>
+
+
+                <a href="@UrlConstants.PlayerOverviewPage(player.AccountId.ToString())" class="hero-name-link">
+                    <div class="player-name">@player.PersonaName</div>
+                </a>
+
+                <div>@player.Level</div>
+                <div>@player.Kills</div>
+                <div>@player.Deaths</div>
+                <div>@player.Assists</div>
+                <div>@player.LastHits</div>
+                <div>@player.Denies</div>
+                <div>@player.TotalGold</div>
+                <div>@player.GoldPerMin</div>
+                <div>@player.XpPerMin</div>
+                <div>@player.HeroDamage</div>
+                <div>@player.TowerDamage</div>
+                <div>@player.HeroHealing</div>
+
+
+                <div>
+                    <div class="items-container">
+                        <div class="item-slot">
+                            @if (player.Item0 > 0)
+                            {
+                                <img src="@DotaItemHelper.GetItemImage(player.Item0)" alt="Item"/>
+                            }
+                        </div>
+                        <div class="item-slot">
+                            @if (player.Item1 > 0)
+                            {
+                                <img src="@DotaItemHelper.GetItemImage(player.Item1)" alt="Item"/>
+                            }
+                        </div>
+                        <div class="item-slot">
+                            @if (player.Item2 > 0)
+                            {
+                                <img src="@DotaItemHelper.GetItemImage(player.Item2)" alt="Item"/>
+                            }
+                        </div>
+                        <div class="item-slot">
+                            @if (player.Item3 > 0)
+                            {
+                                <img src="@DotaItemHelper.GetItemImage(player.Item3)" alt="Item"/>
+                            }
+                        </div>
+                        <div class="item-slot">
+                            @if (player.Item4 > 0)
+                            {
+                                <img src="@DotaItemHelper.GetItemImage(player.Item4)" alt="Item"/>
+                            }
+                        </div>
+                        <div class="item-slot">
+                            @if (player.Item5 > 0)
+                            {
+                                <img src="@DotaItemHelper.GetItemImage(player.Item5)" alt="Item"/>
+                            }
+                        </div>
+                    </div>
+                    <div class="backpack-container">
+                        <div class="backpack-slot">
+                            @if (player.Backpack0 > 0)
+                            {
+                                <img src="@DotaItemHelper.GetItemImage(player.Backpack0)" alt="Item"/>
+                            }
+                        </div>
+                        <div class="backpack-slot">
+                            @if (player.Backpack1 > 0)
+                            {
+                                <img src="@DotaItemHelper.GetItemImage(player.Backpack1)" alt="Item"/>
+                            }
+                        </div>
+                        <div class="backpack-slot">
+                            @if (player.Backpack2 > 0)
+                            {
+                                <img src="@DotaItemHelper.GetItemImage(player.Backpack2)" alt="Item"/>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+@* For Dire Team *@
+<div class="team-draft-section">
+    <div class="draft-container">
+        <div class="draft-row">
+            <div class="draft-label">Picks:</div>
+            <div class="heroes-list">
+                @foreach (var pick in Model.PicksBans.Where(pb => pb.IsPick && pb.Team == 1).OrderBy(pb => pb.Order))
+                {
+                    <div class="hero-item">
+                        <img src="@DotaHeroHelper.GetHeroImage(pick.HeroId)" alt="Hero Pick" />
+                        <span class="hero-order">@(pick.Order + 1)</span>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="draft-row">
+            <div class="draft-label">Bans:</div>
+            <div class="heroes-list">
+                @{var direBanCounter = 1;}
+                @foreach (var ban in Model.PicksBans.Where(pb => !pb.IsPick && pb.Team == 1).OrderBy(pb => pb.Order))
+                {
+                    <div class="hero-item hero-ban">
+                        <img src="@DotaHeroHelper.GetHeroImage(ban.HeroId)" alt="Hero Ban" />
+                        <span class="hero-order">@(direBanCounter)</span>
+                    </div>
+                    direBanCounter++;
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 
 </body>
 </html>

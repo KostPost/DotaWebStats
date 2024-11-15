@@ -14,6 +14,6 @@ public static class UrlConstants
     public static string SteamProfileUrl(string steamId) => $"{SteamCommunityBaseUrl}/profiles/{steamId}";
 
 
-    private const string PlayerProfileBase = "/player";
-    public static string PlayerProfileUrl(string id) => $"{PlayerProfileBase}/{id}";
+    // private const string PlayerProfileBase = "/player";
+    // public static string PlayerProfileUrl(string id) => $"{PlayerProfileBase}/{id}";
 }

@@ -8,104 +8,45 @@ namespace DotaWebStats.Services.Helpers;
 public class DotaDataHelper
 {
     
-    public static List<RecentMatches> GetCorrectStats(List<RecentMatches> recentMatchesList)
+    public static long IsDotaIdCorrect(long id)
     {
-        if (!recentMatchesList.Any())
-        {
-            Console.WriteLine("recentMatchesList is null, returning an empty list.");
-            return new List<RecentMatches>(); 
-        }
-
-        foreach (var match in recentMatchesList)
-        {
-            DotaHeroHelper.SetHeroInfo(match); // Updated to use DotaHeroHelper
-        }
-
-        return SetWinLoss(recentMatchesList);
-    }
-    
-    public static List<RecentMatches> GameModeName(List<RecentMatches> recentMatchesList)
-    {
-        foreach (var match in recentMatchesList)
-        {
-            match.GameModeName = match.GameMode switch
-            {
-                0 => "Unknown",
-                1 => "All Pick",
-                2 => "Captains Mode",
-                3 => "Random Draft",
-                4 => "Single Draft",
-                5 => "All Random",
-                6 => "Intro",
-                7 => "Diretide",
-                8 => "Reverse Captains Mode",
-                9 => "Greeviling",
-                10 => "Tutorial",
-                11 => "Mid Only",
-                12 => "Least Played",
-                13 => "Limited Heroes",
-                14 => "Compendium Matchmaking",
-                15 => "Custom",
-                16 => "Captains Draft",
-                17 => "Balanced Draft",
-                18 => "Ability Draft",
-                19 => "Event",
-                20 => "All Random Deathmatch",
-                21 => "1v1 Mid",
-                22 => "All Draft",
-                23 => "Turbo",
-                24 => "Mutation",
-                _ => "Unknown"
-            };
-        }
-    
-        return recentMatchesList;
-    }
-    
-    public static RecentMatches SetGameModeName(RecentMatches recentMatchesList)
-    {
-        foreach (var match in recentMatchesList)
-        {
-            match.GameModeName = match.GameMode switch
-            {
-                0 => "Unknown",
-                1 => "All Pick",
-                2 => "Captains Mode",
-                3 => "Random Draft",
-                4 => "Single Draft",
-                5 => "All Random",
-                6 => "Intro",
-                7 => "Diretide",
-                8 => "Reverse Captains Mode",
-                9 => "Greeviling",
-                10 => "Tutorial",
-                11 => "Mid Only",
-                12 => "Least Played",
-                13 => "Limited Heroes",
-                14 => "Compendium Matchmaking",
-                15 => "Custom",
-                16 => "Captains Draft",
-                17 => "Balanced Draft",
-                18 => "Ability Draft",
-                19 => "Event",
-                20 => "All Random Deathmatch",
-                21 => "1v1 Mid",
-                22 => "All Draft",
-                23 => "Turbo",
-                24 => "Mutation",
-                _ => "Unknown"
-            };
-        }
-    
-        return recentMatchesList;
+        return id < NumConstants.SteamIdToDota2IdDiff ? id : id - NumConstants.SteamIdToDota2IdDiff;
     }
 
+    public static string GetGameModeName(int gameMode)
+    {
+        var gameModes = new Dictionary<int, string>
+        {
+            { 0, "Unknown" },
+            { 1, "All Pick" },
+            { 2, "Captains Mode" },
+            { 3, "Random Draft" },
+            { 4, "Single Draft" },
+            { 5, "All Random" },
+            { 6, "Intro" },
+            { 7, "Diretide" },
+            { 8, "Reverse Captains Mode" },
+            { 9, "Greeviling" },
+            { 10, "Tutorial" },
+            { 11, "Mid Only" },
+            { 12, "Least Played" },
+            { 13, "Limited Heroes" },
+            { 14, "Compendium Matchmaking" },
+            { 15, "Custom" },
+            { 16, "Captains Draft" },
+            { 17, "Balanced Draft" },
+            { 18, "Ability Draft" },
+            { 19, "Event" },
+            { 20, "All Random Deathmatch" },
+            { 21, "1v1 Mid" },
+            { 22, "All Draft" },
+            { 23, "Turbo" },
+            { 24, "Mutation" }
+        };
 
-
+        return gameModes.TryGetValue(gameMode, out var name) ? name : "Unknown";
+    }
     
-    
-
-
     public string GetRankImagePath(int rankTier)
     {
         var tier = rankTier / 10;
@@ -155,85 +96,10 @@ public class DotaDataHelper
             return $"{rankName} {stars}";
         }
 
-        // return $"Immortal Rank {_player.LeaderboardRank.Value}";
-
         return $"Immortal Rank";
     }
 
-
-    // public static List<RecentMatches> GetCorrectStats(List<RecentMatches> recentMatchesList)
-    // {
-    //     if (recentMatchesList.Count == 0)
-    //     {
-    //         Console.WriteLine("recentMatchesList is null, returning an empty list.");
-    //         return new List<RecentMatches>(); 
-    //     }
-    //
-    //     var heroDictionary = GetHeroesDictionary();
-    //     if (heroDictionary == null || !heroDictionary.Any())
-    //     {
-    //         Console.WriteLine("Heroes data is null or empty.");
-    //         return recentMatchesList; 
-    //     }
-    //
-    //     foreach (var match in recentMatchesList)
-    //     {
-    //         SetHeroInfo(match, heroDictionary);
-    //     }
-    //
-    //     recentMatchesList = SetWinLoss(recentMatchesList);
-    //     return recentMatchesList;
-    // }
-    //
-    // private static Dictionary<int, (string Name, string LocalizedName)> GetHeroesDictionary()
-    // {
-    //     using var httpClient = new HttpClient();
-    //
-    //     var response = httpClient.GetStringAsync(ApiConstants.DotaApi.GetHeroes()).Result;
-    //     var heroes = JsonSerializer.Deserialize<List<DotaHero>>(response);
-    //
-    //     if (heroes == null || !heroes.Any())
-    //     {
-    //         return new Dictionary<int, (string Name, string LocalizedName)>(); // Return empty dictionary
-    //     }
-    //
-    //     var heroDictionary = new Dictionary<int, (string Name, string LocalizedName)>();
-    //     foreach (var hero in heroes)
-    //     {
-    //         var heroName = hero.Name.Replace("npc_dota_hero_", "");
-    //         heroDictionary[hero.Id] = (heroName.ToLower(), hero.LocalizedName);
-    //     }
-    //
-    //     return heroDictionary;
-    // }
-    //
-    // private static void SetHeroInfo(RecentMatches match, Dictionary<int, (string Name, string LocalizedName)> heroDictionary)
-    // {
-    //     if (heroDictionary.TryGetValue(match.HeroId, out var heroInfo))
-    //     {
-    //         match.HeroName = heroInfo.Name;
-    //         match.LocalizedName = heroInfo.LocalizedName;
-    //         match.HeroImageUrl = ApiConstants.GetHeroImageUrl(heroInfo.Name); 
-    //     }
-    // }
-    //
-    // private static Dictionary<int, string> HeroNamesDictionary = new Dictionary<int, string>();
-    //
-    //
-    // public async Task PopulateHeroNamesDictionary()
-    // {
-    //     var heroDictionary = GetHeroesDictionary(); // Use the earlier GetHeroesDictionary method
-    //     foreach (var hero in heroDictionary)
-    //     {
-    //         HeroNamesDictionary[hero.Key] = hero.Value.Name;
-    //     }
-    // }
-    //
-    // public static string GetHeroName(int heroId)
-    // {
-    //     return HeroNamesDictionary.TryGetValue(heroId, out var heroName) ? heroName : "Unknown Hero";
-    // }
-
+    
 
     public static RecentMatchesSummary GetRecentAverageMaximum(List<RecentMatches> recentMatches)
     {
@@ -301,65 +167,13 @@ public class DotaDataHelper
 
         return recentMatchesSummary;
     }
-
-    private static List<RecentMatches> SetWinLoss(List<RecentMatches> recentMatches)
-    {
-        foreach (var match in recentMatches)
-        {
-            if (match.PlayerSlot < 128)
-            {
-                if (match.RadiantWin)
-                {
-                    match.IsPlayerWin = true;
-                }
-                else
-                {
-                    match.IsPlayerWin = false;
-                }
-            }
-            else
-            {
-                if (match.RadiantWin)
-                {
-                    match.IsPlayerWin = false;
-                }
-                else
-                {
-                    match.IsPlayerWin = true;
-                }
-            }
-        }
-
-        return recentMatches;
-    }
-    public static RecentMatches SetWinLoss(RecentMatches recentMatch)
-    {
-        if (recentMatch.PlayerSlot < 128)
-        {
-            if (recentMatch.RadiantWin)
-            {
-                recentMatch.IsPlayerWin = true;
-            }
-            else
-            {
-                recentMatch.IsPlayerWin = false;
-            }
-        }
-        else
-        {
-            if (recentMatch.RadiantWin)
-            {
-                recentMatch.IsPlayerWin = false;
-            }
-            else
-            {
-                recentMatch.IsPlayerWin = true;
-            }
-        }
-
-        return recentMatch;
-    }
     
+    
+    public static bool IsPlayerWin(int playerSlot, bool radiantWin)
+    {
+        return (playerSlot < 128) == radiantWin;
+    }
+
     
     public static double CalculateWinRate(int wins, int losses)
     {
@@ -416,13 +230,4 @@ public class DotaDataHelper
         return null;
     }
 
-    public static List<RecentMatches> SetRankName(List<RecentMatches> recentMatchesList)
-    {
-        foreach (var match in recentMatchesList)
-        {
-            match.AverageRankName = GetRankName(match.AverageRank ?? 0);
-        }
-
-        return recentMatchesList;
-    }
 }

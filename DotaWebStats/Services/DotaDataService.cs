@@ -111,11 +111,8 @@ public class DotaDataService(IHttpClientFactory httpClientFactory, ApiService ap
             return null;
         }
 
-        recentMatches = DotaDataHelper.SetRankName(recentMatches);
-        recentMatches = DotaDataHelper.SetGameModeName(recentMatches);
-        return DotaDataHelper.GetCorrectStats(recentMatches);
+        return recentMatches;
     }
-
     public async Task<MatchOverview?> GetMatchInfo(long matchId)
     {
         return await _apiService.GetMatchInfoAsync(matchId);

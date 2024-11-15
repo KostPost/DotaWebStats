@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-// for the first add a team victory, the score, time, game data, game type, match id,.. region
 
 public class MatchOverview
 {

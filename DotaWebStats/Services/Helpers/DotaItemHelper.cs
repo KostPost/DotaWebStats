@@ -69,11 +69,16 @@ public class DotaItemHelper
         return ItemLocalizedNameDictionary.TryGetValue(itemId, out var itemName) ? itemName : "Unknown Item";
     }
     
-    public static string GetItemName(int itemId)
+    private static string GetItemName(int itemId)
     {
-        if (!ItemLocalizedNameDictionary.Any()) InitializeAsync().Wait();
-
-        return ItemInternalNameDictionary.TryGetValue(itemId, out var itemName) ? itemName : "Unknown Item";
+        if (itemId <= 0) return string.Empty;
+    
+        if (!ItemLocalizedNameDictionary.Any()) 
+            InitializeAsync().Wait();
+        
+        return ItemInternalNameDictionary.TryGetValue(itemId, out var itemName) 
+            ? itemName 
+            : "Unknown Item";
     }
     
     public static string GetItemImage(string itemName)
@@ -86,6 +91,12 @@ public class DotaItemHelper
     
     public static string GetItemImage(int itemId)
     {
-        return ApiConstants.GetItemImageUrl(GetItemName(itemId));
+        if (itemId <= 0) return string.Empty;
+    
+        var itemName = GetItemName(itemId);
+        return string.IsNullOrEmpty(itemName) || itemName == "Unknown Item" 
+            ? string.Empty 
+            : ApiConstants.GetItemImageUrl(itemName);
     }
+
 }
