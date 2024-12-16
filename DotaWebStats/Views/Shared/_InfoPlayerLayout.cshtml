@@ -2,19 +2,22 @@
 @using DotaWebStats.Constants
 @using DotaWebStats.Models.DotaData
 @using DotaWebStats.Services.Helpers
-@model UserDotaStats
+@model DotaWebStats.Models.Common_Classes.PlayerLayoutViewModel
 @inject IDotaDataService DotaDataService
 @inject DotaDataHelper DotaDataHelper
 
 @{
     Layout = "_Layout";
-    ViewData["Title"] = $"Player Profile - {Model.Profile.UserName}";
+
+    Model.UserDotaStats = await DotaDataService.GetPlayerSummary(Model.PlayerId);
+
+    ViewData["Title"] = $"Player Profile - {Model.UserDotaStats?.Profile?.UserName ?? "Unknown"}";
 
     WinLoseStats? winLoseStats = null;
 
-    if (!string.IsNullOrEmpty(Model.Dota2Id))
+    if (!string.IsNullOrEmpty(Model.UserDotaStats.Dota2Id))
     {
-        if (long.TryParse(Model.Dota2Id, out var dota2Id))
+        if (long.TryParse(Model.UserDotaStats.Dota2Id, out var dota2Id))
         {
             winLoseStats = await DotaDataService.GetPlayerWinLoss(dota2Id);
         }
@@ -37,10 +40,10 @@
     <div class="profile-container">
         <div class="avatar-info-container">
             <div class="avatar-container">
-                <img src="@Model.Profile.AvatarFull" alt="@Model.Profile.UserName's avatar" class="img-fluid rounded-circle mb-3" style="width: 100%; max-width: 200px;"/>
+                <img src="@Model.UserDotaStats.Profile.AvatarFull" alt="@Model.UserDotaStats.Profile.UserName's avatar" class="img-fluid rounded-circle mb-3" style="width: 100%; max-width: 200px;"/>
             </div>
             <div class="info-container">
-                <h1>@Model.Profile.UserName</h1>
+                <h1>@Model.UserDotaStats.Profile.UserName</h1>
                 @if (winLoseStats != null)
                 {
                     <p class="win-rate">Win Rate: @(winLoseStats.WinRate.ToString("F2"))%</p>
@@ -54,31 +57,49 @@
             </div>
         </div>
         <div class="rank-container">
-            @if (Model.RankTier > 0)
+            @if (Model.UserDotaStats.RankTier > 0)
             {
                 <div class="rank-image">
-                    <img src="@DotaDataHelper.GetRankImagePath(Model.RankTier)" alt="Rank Medal" style="width: 170px; height: 170px;"/>
-                    <span class="rank-name">@DotaDataHelper.GetRankName(Model.RankTier)</span>
+                    <img src="@DotaDataHelper.GetRankImagePath(Model.UserDotaStats.RankTier)" alt="Rank Medal" style="width: 170px; height: 170px;"/>
+                    <span class="rank-name">@DotaDataHelper.GetRankName(Model.UserDotaStats.RankTier)</span>
                 </div>
             }
             else
             {
                 <p>Unranked</p>
             }
-            @if (Model.LeaderboardRank.HasValue)
+            @if (Model.UserDotaStats.LeaderboardRank.HasValue)
             {
-                <p>Leaderboard Rank: @Model.LeaderboardRank</p>
+                <p>Leaderboard Rank: @Model.UserDotaStats.LeaderboardRank</p>
             }
         </div>
     </div>
 
     <div class="button-container">
 
-        <a href=@UrlConstants.PlayerOverviewPage(Model.Dota2Id) class="btn">
-            Overview
-        </a>
+        @if (Model.UserDotaStats?.Dota2Id != null)
+        {
+            <a href="@UrlConstants.PlayerOverviewPage(Model.UserDotaStats.Dota2Id)" class="btn">
+                Overview
+            </a>
+        }
+        else
+        {
+            <span class="btn disabled">Overview</span>
+        }
 
-        <button class="btn">Matches</button>
+        @if (Model.UserDotaStats?.Dota2Id != null)
+        {
+            <a href=@UrlConstants.PlayerMatchesPage(Model.UserDotaStats.Dota2Id) class="btn">
+                Matches
+            </a>
+        }
+        else
+        {
+            <span class="btn disabled">Overview</span>
+        }
+
+
         <button class="btn">Heroes</button>
         <button class="btn">Peers</button>
         <button class="btn">Pros</button>

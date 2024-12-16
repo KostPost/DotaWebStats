@@ -1,4 +1,17 @@
-﻿.stats-container {
+﻿/*.stats-container {*/
+/*    width: 100%;*/
+/*    max-width: 1200px;*/
+/*    margin: 0 auto;*/
+/*    color: #000000;*/
+/*    padding: 15px;*/
+/*    font-family: Arial, sans-serif;*/
+/*    background-color: #ffffff;*/
+/*    border-radius: 10px;*/
+/*    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
+/*    box-sizing: border-box;*/
+/*}*/
+
+.stats-container {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -132,9 +145,25 @@
 }
 
 
+/*.table-container {*/
+/*    margin-top: 20px;*/
+/*    overflow-x: auto;*/
+/*    max-width: 1200px;!* Enable horizontal scrolling for small screens *!*/
+/*}*/
+
+/* Add a wrapper div in your HTML around the table-container */
+.table-wrapper {
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    margin-top: 50px; /* Adjust this value to move it down */
+}
 .table-container {
-    margin-top: 20px;
-    overflow-x: auto; /* Enable horizontal scrolling for small screens */
+    width: 100%;
+    overflow-x: auto;
+    max-width: 1200px;
+    margin: 0 auto; /* This centers horizontally */
 }
 
 .match-table {

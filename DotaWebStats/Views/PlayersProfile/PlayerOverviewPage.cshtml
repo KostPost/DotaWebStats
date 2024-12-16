@@ -1,4 +1,5 @@
 ﻿@using DotaWebStats.Constants
+@using DotaWebStats.Models.Common_Classes
 @using DotaWebStats.Services.Helpers
 @model PlayerViewModel
 
@@ -12,7 +13,15 @@
     ViewData["Title"] = @Model.UserStats.Profile.UserName + " - Overview";
 }
 
-@await Html.PartialAsync("_InfoPlayerLayout", Model.UserStats)
+@if (!string.IsNullOrEmpty(Model.UserStats.Dota2Id) && long.TryParse(Model.UserStats.Dota2Id, out var playerId))
+{
+    @await Html.PartialAsync("_InfoPlayerLayout", new PlayerLayoutViewModel { PlayerId = playerId })
+}
+else
+{
+    <p>Error: Dota2Id is not a valid number.</p>
+}
+
 
 <div class="stats-container">
     <div class="stats-title">
@@ -171,96 +180,98 @@
 </div>
 
 
-<div class="table-container">
-    <table class="match-table">
-        <thead>
-        <tr>
-            <th>Hero</th>
-            <th>Result</th>
-            <th>Game Mode</th>
-            <th>Duration</th>
-            <th style="text-align: center;">K</th>
-            <th style="text-align: center;">D</th>
-            <th style="text-align: center;">A</th>
+<div class="table-wrapper">
+    <div class="table-container">
+        <table class="match-table">
+            <thead>
+            <tr>
+                <th>Hero</th>
+                <th>Result</th>
+                <th>Game Mode</th>
+                <th>Duration</th>
+                <th style="text-align: center;">K</th>
+                <th style="text-align: center;">D</th>
+                <th style="text-align: center;">A</th>
 
-        </tr>
-        </thead>
-        <tbody>
-        @if (Model.RecentMatches != null && Model.RecentMatches.Any())
-        {
-            foreach (var match in Model.RecentMatches)
+            </tr>
+            </thead>
+            <tbody>
+            @if (Model.RecentMatches != null && Model.RecentMatches.Any())
+            {
+                foreach (var match in Model.RecentMatches)
+                {
+                    <tr>
+
+
+                        <td>
+                            <div class="hero-info">
+                                <img src="@DotaHeroHelper.GetHeroImage(match.HeroId)" alt="Hero Image" class="hero-image"/>
+
+
+                                <a href="@UrlConstants.MatchOverviewPage(match.MatchId.ToString())" class="hero-name-link">
+                                    <strong>@DotaHeroHelper.GetHeroLocalizedName(match.HeroId)</strong>
+                                </a>
+
+                            </div>
+                        </td>
+
+
+                        <td>
+                            <a style="text-decoration: none; color: inherit;">
+                                <div style="color: @(DotaDataHelper.IsPlayerWin(match.PlayerSlot, match.RadiantWin) ? "green" : "red"); font-weight: bold;">
+                                    <strong>@(DotaDataHelper.IsPlayerWin(match.PlayerSlot, match.RadiantWin) ? "Win" : "Loss")</strong>
+                                </div>
+                            </a>
+
+                        </td>
+
+
+                        <td>
+                            <div>
+                                <strong>@DotaDataHelper.GetGameModeName(match.GameMode) </strong>
+                            </div>
+                            <div>
+                                <strong>@DotaDataHelper.GetRankName(match.AverageRank ?? 0)</strong>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <strong>Duration: @TimeSpan.FromSeconds(match.Duration).ToString(@"mm\:ss")</strong>
+                            </div>
+                            <div>
+                                <strong>@(match.PlayerSlot < 5 ? "Radiant" : "Dire")</strong>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="kill">
+                                <strong>@match.Kills</strong>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="death">
+                                <strong>@match.Deaths</strong>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="assists">
+                                <strong>@match.Assists</strong>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
             {
                 <tr>
-
-
-                    <td>
-                        <div class="hero-info">
-                            <img src="@DotaHeroHelper.GetHeroImage(match.HeroId)" alt="Hero Image" class="hero-image"/>
-                            
-                            
-                            <a href="@UrlConstants.MatchOverviewPage(match.MatchId.ToString())" class="hero-name-link">
-                                <strong>@DotaHeroHelper.GetHeroLocalizedName(match.HeroId)</strong>
-                            </a>
-                            
-                        </div>
-                    </td>
-
-
-                    <td>
-                        <a style="text-decoration: none; color: inherit;">
-                            <div style="color: @(DotaDataHelper.IsPlayerWin(match.PlayerSlot, match.RadiantWin) ? "green" : "red"); font-weight: bold;">
-                                <strong>@(DotaDataHelper.IsPlayerWin(match.PlayerSlot, match.RadiantWin) ? "Win" : "Loss")</strong>
-                            </div>
-                        </a>
-
-                    </td>
-
-
-                    <td>
-                        <div>
-                            <strong>@DotaDataHelper.GetGameModeName(match.GameMode) </strong>
-                        </div>
-                        <div>
-                            <strong>@DotaDataHelper.GetRankName(match.AverageRank ?? 0)</strong>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <strong>Duration: @TimeSpan.FromSeconds(match.Duration).ToString(@"mm\:ss")</strong>
-                        </div>
-                        <div>
-                            <strong>@(match.PlayerSlot < 5 ? "Radiant" : "Dire")</strong>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="kill">
-                            <strong>@match.Kills</strong>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="death">
-                            <strong>@match.Deaths</strong>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="assists">
-                            <strong>@match.Assists</strong>
-                        </div>
+                    <td colspan="7" style="text-align: center;">
+                        <strong>No data</strong>
                     </td>
                 </tr>
             }
-        }
-        else
-        {
-            <tr>
-                <td colspan="7" style="text-align: center;">
-                    <strong>No data</strong>
-                </td>
-            </tr>
-        }
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div class="page-data"></div>

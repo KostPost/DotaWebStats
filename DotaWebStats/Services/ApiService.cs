@@ -1,14 +1,20 @@
 ﻿using System.Text.Json;
 using DotaWebStats.Constants;
 using DotaWebStats.Models.MatchesData;
+using DotaWebStats.Services.Helpers;
 
-namespace DotaWebStats.Services;
-
-public class ApiService(HttpClient httpClient)
+namespace DotaWebStats.Services
 {
-    private readonly HttpClient _httpClient = httpClient;
-    
-     public async Task<JsonElement?> GetPlayerSummaryJsonAsync(long accountId)
+    public class ApiService
+    {
+        private readonly HttpClient _httpClient;
+
+        public ApiService(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
+
+        public async Task<JsonElement?> GetPlayerSummaryJsonAsync(long accountId)
         {
             return await GetJsonAsync(ApiConstants.DotaApi.GetPlayerStats(accountId), "PlayerSummary");
         }
@@ -21,6 +27,50 @@ public class ApiService(HttpClient httpClient)
         public async Task<JsonElement?> GetRecentMatchesJsonAsync(long accountId)
         {
             return await GetJsonAsync(ApiConstants.DotaApi.GetRecentMatches(accountId), "RecentMatches");
+        }
+
+        // public async Task<List<PlayerMatches>?> GetPlayerMatchesAsyncJsonAsync(long accountId)
+        // {
+        //     var response = await _httpClient.GetAsync(ApiConstants.DotaApi.GetMatches(accountId));
+        //
+        //     if (!response.IsSuccessStatusCode)
+        //     {
+        //         Console.WriteLine($"API request for matches failed with status code: {response.StatusCode}");
+        //         return null;
+        //     }
+        //
+        //     var content = await response.Content.ReadAsStringAsync();
+        //
+        //     try
+        //     {
+        //         var jsonOptions = new JsonSerializerOptions
+        //         {
+        //             Converters = { new NullableIntConverter() } // Add the converter here
+        //         };
+        //
+        //         var playerMatches = JsonSerializer.Deserialize<List<PlayerMatches>>(content, jsonOptions);
+        //
+        //         return playerMatches;
+        //     }
+        //     catch (JsonException ex)
+        //     {
+        //         Console.WriteLine($"Failed to deserialize matches API response: {ex.Message}");
+        //         return null;
+        //     }
+        // }
+        
+        public async Task<string?> GetPlayerMatchesAsyncJsonAsync(long accountId)
+        {
+            var response = await _httpClient.GetAsync(ApiConstants.DotaApi.GetMatches(accountId));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine($"API request for matches failed with status code: {response.StatusCode}");
+                return null;
+            }
+
+            // Return the raw JSON string directly
+            return await response.Content.ReadAsStringAsync();
         }
 
         public async Task<MatchOverview?> GetMatchInfoAsync(long matchId)
@@ -64,5 +114,5 @@ public class ApiService(HttpClient httpClient)
                 return null;
             }
         }
-
+    }
 }

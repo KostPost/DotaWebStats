@@ -1,0 +1,23 @@
+﻿@using DotaWebStats.Models.Common_Classes
+@model List<DotaWebStats.Models.MatchesData.PlayerMatches>
+
+@section Styles {
+    <link rel="stylesheet" href="@Url.Content("~/css/PlayerOverview.css")"/>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+}
+
+
+@{
+    ViewData["Title"] = "Player Matches";
+    var playerId = ViewData["PlayerId"] as long?; 
+
+    if (playerId.HasValue)
+    {
+        @await Html.PartialAsync("_InfoPlayerLayout", new PlayerLayoutViewModel { PlayerId = playerId.Value })
+    }
+    else
+    {
+        <p>Player ID is missing or invalid.</p>
+    }
+}

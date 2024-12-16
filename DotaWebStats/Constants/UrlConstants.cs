@@ -7,6 +7,9 @@ public static class UrlConstants
 
     public static string PlayerOverviewPage(string id) => $"http://localhost:5103/player/{id}/overview";
     
+    public static string PlayerMatchesPage(string id) => $"http://localhost:5103/player/{id}/matches";
+
+    
     public static string MatchOverviewPage(string id) => $"http://localhost:5103/match/{id}";
 
 

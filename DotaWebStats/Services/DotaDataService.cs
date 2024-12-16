@@ -1,4 +1,6 @@
-﻿using DotaWebStats.Models.DotaData;
+﻿using System.Text.RegularExpressions;
+using DotaWebStats.Model;
+using DotaWebStats.Models.DotaData;
 using DotaWebStats.Models.MatchesData;
 using DotaWebStats.Services.Helpers;
 
@@ -19,6 +21,8 @@ public interface IDotaDataService
     Task<List<RecentMatches>?> GetRecentMatches(long accountId);
 
     Task<MatchOverview?> GetMatchInfo(long matchId);
+    
+    Task<List<PlayerMatches>?> GetPlayerMatchAsync(long matchId);
 }
 
 public class DotaDataService(IHttpClientFactory httpClientFactory, ApiService apiService) : IDotaDataService
@@ -117,4 +121,91 @@ public class DotaDataService(IHttpClientFactory httpClientFactory, ApiService ap
     {
         return await _apiService.GetMatchInfoAsync(matchId);
     }
+
+    // public async Task<List<PlayerMatches>?> GetPlayerMatchAsync(long accountId)
+    // {
+    //     if (DotaDataHelper.IdDifference(accountId) == 0)
+    //     {
+    //         return null;
+    //     }
+    //
+    //     var root = await _apiService.GetPlayerMatchesAsyncJsonAsync(accountId);
+    //
+    //     if (root == null)
+    //     {
+    //         return null;
+    //     }
+    //
+    //     // Ensure root is a valid JSON string
+    //     var rootString = root.ToString();
+    //     if (string.IsNullOrEmpty(rootString))
+    //     {
+    //         return null;
+    //     }
+    //
+    //     Console.WriteLine("Raw API response: " + rootString); // Log the raw response for inspection
+    //
+    //     try
+    //     {
+    //         var playerMatches = JsonSerializer.Deserialize<List<PlayerMatches>>(rootString, new JsonSerializerOptions
+    //         {
+    //             PropertyNameCaseInsensitive = true  // Make sure case differences in property names are handled
+    //         });
+    //
+    //         if (playerMatches == null)
+    //         {
+    //             Console.WriteLine("Deserialized playerMatches is null.");
+    //             return null;
+    //         }
+    //
+    //         return playerMatches;
+    //     }
+    //     catch (JsonException ex)
+    //     {
+    //         Console.WriteLine($"Error during deserialization: {ex.Message}");
+    //         return null;
+    //     }
+    // }
+
+    public async Task<List<PlayerMatches>?> GetPlayerMatchAsync(long accountId)
+    {
+        if (DotaDataHelper.IdDifference(accountId) == 0)
+        {
+            return null;
+        }
+
+        var jsonString = await _apiService.GetPlayerMatchesAsyncJsonAsync(accountId);
+
+        if (string.IsNullOrEmpty(jsonString))
+        {
+            return null;
+        }
+
+
+        try
+        {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                Converters = { new NullableIntConverter() }
+            };
+
+            var playerMatches = JsonSerializer.Deserialize<List<PlayerMatches>>(jsonString, options);
+        
+            if (playerMatches == null)
+            {
+                Console.WriteLine("Deserialized playerMatches is null.");
+                return null;
+            }
+
+            return playerMatches;
+        }
+        catch (JsonException ex)
+        {
+            Console.WriteLine($"Error during deserialization: {ex.Message}");
+            return null;
+        }
+    }
+
+    
 }

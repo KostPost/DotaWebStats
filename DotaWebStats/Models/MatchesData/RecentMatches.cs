@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace DotaWebStats.Models;
+namespace DotaWebStats.Model;
 
 public class RecentMatches
 {

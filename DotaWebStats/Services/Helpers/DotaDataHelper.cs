@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using DotaWebStats.Constants;
+using DotaWebStats.Model;
 using DotaWebStats.Models;
-using DotaWebStats.Services.Helpers;
 
 namespace DotaWebStats.Services.Helpers;
 

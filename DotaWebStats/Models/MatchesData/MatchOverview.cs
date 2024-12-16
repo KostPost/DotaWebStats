@@ -1,4 +1,6 @@
-﻿namespace DotaWebStats.Models.MatchesData;
+﻿using DotaWebStats.Models.Common_Classes;
+
+namespace DotaWebStats.Models.MatchesData;
 
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
@@ -163,17 +165,3 @@ public class Player
 
 }
 
-public class PickBan
-{
-    [JsonPropertyName("is_pick")]
-    public bool IsPick { get; set; }
-
-    [JsonPropertyName("hero_id")]
-    public int HeroId { get; set; }
-
-    [JsonPropertyName("team")]
-    public int Team { get; set; }
-
-    [JsonPropertyName("order")]
-    public int Order { get; set; }
-}
